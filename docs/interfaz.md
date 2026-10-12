@@ -4,80 +4,89 @@
 
 ## 1. Principios
 
-1. **Una sola escena manda.** La tienda es la pantalla principal y casi todo se abre tocando objetos de la escena (la libreta, el códice, la puerta). Los paneles son superposiciones, no pantallas sueltas.
-2. **Vertical y con una mano.** Lo que se toca a menudo está en la mitad inferior, al alcance del pulgar. Arriba se *mira* (el cliente); abajo se *hace* (el taller).
-3. **Ventanilla y taller a la vez.** El cliente y el caldero comparten pantalla. Así funcionan los urgentes: el cliente te mira mientras mezclas.
-4. **La escena es el tutorial.** Las probetas, el caldero y Gus explican el sistema con animaciones, sin muros de texto.
-5. **Todo se lee sin color.** Cada esencia tiene color y símbolo.
-6. **Todo el texto es traducible.** Nada de texto en imágenes; claves de idioma desde el primer día.
+1. **Cada estación tiene su pantalla.** La tienda es un espacio que la cámara recorre: la ventanilla, el taller y, más adelante, el mercado. Cada una ocupa la pantalla entera; nada de meterlo todo junto.
+2. **La cámara gira entre estaciones.** Se desliza el dedo o se toca la pestaña, y la cámara hace un barrido (desenfoque de movimiento, líneas de velocidad, cambio de luz). Debe sentirse como darse la vuelta dentro de la tienda.
+3. **El fondo da vida al pueblo.** Por la ventanilla se ve la plaza: gente que pasa, palomas, la fuente, la torre del Gremio, la hora del día. Y en la gente que pasa se ven los efectos de lo que vendes.
+4. **Vertical y con una mano.** Las acciones están en la mitad inferior, al alcance del pulgar.
+5. **La escena es el tutorial.** Las probetas, el caldero y Gus explican el sistema con animaciones, sin muros de texto.
+6. **Todo se lee sin color.** Cada esencia tiene color y símbolo.
+7. **Todo el texto es traducible.** Nada de texto en imágenes; claves de idioma desde el primer día.
 
-## 2. Pantalla principal: la tienda
+**Mockup jugable:** [`mockup/vialix.html`](mockup/vialix.html).
 
-Arte a **180 px de ancho** (×4 en 720p, ×6 en 1080p, ×8 en 1440p). La altura se adapta al móvil (de 320 a ~400 px): en los móviles altos crecen el cielo de la calle y el suelo del taller, no la interfaz.
+## 2. Las estaciones
 
+El arte tiene **unos 180–215 px de ancho** y se escala siempre a múltiplos enteros, así que cada píxel queda nítido en cualquier móvil. La altura se adapta: en los móviles altos crecen el cielo y la pared, no la interfaz.
+
+```
+ ◀── deslizar ──▶          ◀── deslizar ──▶
+┌──────────────┐   ┌──────────────┐   ┌──────────────┐
+│  VENTANILLA  │   │    TALLER    │   │   MERCADO    │
+│ plaza viva,  │   │ probetas,    │   │ (más         │
+│ cliente,     │   │ caldero, Gus,│   │  adelante)   │
+│ mostrador,   │   │ alambique,   │   │              │
+│ vitrina,     │   │ estante de   │   │              │
+│ sellos       │   │ ingredientes │   │              │
+└──────────────┘   └──────────────┘   └──────────────┘
+```
+
+### 2.1 HUD superior (común)
+Día y día de la semana · monedas · reputación en este pueblo · sonido. Más adelante, los días hasta el alquiler.
+
+### 2.2 Ventanilla
 ```
 ┌──────────────────────────────────┐
-│ Día 12 · Lunes   🪙 340   ★★★☆   🏠3d │ ← HUD (DOM)
-├──────────────────────────────────┤
-│ ░░ calle: paralaje, gente, clima ░░ │
-│      ┌──────┐                      │ ← VENTANILLA
-│  💬  │CLIENT│   (cola por la ventana)│   el cliente, su bocadillo,
-│      └──────┘                      │   la calle de fondo
-│ ═══════ MOSTRADOR ═══════ 🔔 📜     │ ← documentos, monedas,
-│ [🧪][🧪][🧪][  ][  ][  ]  VITRINA    │   campanilla, edicto clavado
-├──────────────────────────────────┤
-│  [Rechazar]  [Apuntar]  [Servir]   │ ← FRANJA DE DECISIÓN
-├──────────────────────────────────┤
-│   🔥  💧  🌿  🌬️  🌀   ← 5 probetas │
-│                                    │
-│  🥣          ╭─────╮         🧌     │ ← TALLER
-│ mortero     │CALDERO│        Gus    │   probetas, caldero, mortero,
-│             ╰─────╯                │   Gus, alambique y barril
-│   ⚗️    [ 🔥 Hervir | ❄️ | 🌙 ]   🛢️  │ ← modo del caldero
-│  → Silencio · Normal · hipo humo   │ ← predicción (si se conoce)
-├──────────────────────────────────┤
-│ ◂ [🌿][💧][🪶][🌶️][🍄][🫙] ▸  ⇡   │ ← ESTANTE DE INGREDIENTES
-│  📒 Libreta  📖 Códice  🚪  ☰       │ ← barra inferior
+│ Día 1 · Lunes      🪙 120  ★★★★☆  🔊 │ HUD
+│ ┌──────────────────────────────┐ │
+│ │ SRA. PELLEJO                 │ │ bocadillo (arriba, no tapa la plaza)
+│ │ Algo para que mi suegra…     │ │
+│ └──────────────────────────────┘ │
+│ 📜  cielo, banderines, torre   🏮 │ edicto clavado · farol
+│     casas, puestos, fuente       │
+│     gente que pasa · la cola     │ plaza viva
+│        ┌──────────┐              │
+│        │ CLIENTE  │              │ cliente a medio cuerpo
+│ 📕 ════╧══════════╧═══ 🪙  🔔 ═══ │ mostrador: libreta, monedas, campanilla
+│   🧪  🧪  ·   ·   ·   ·          │ vitrina (6 huecos)
+│  [RECHAZAR] [APUNTAR] [SERVIR]   │ sellos de caucho
+│  Ventanilla    Taller   Mercado  │ pestañas
 └──────────────────────────────────┘
 ```
+- **La plaza:** cielo por bandas que cambia con la hora (mañana → atardecer), nubes, banderines al viento, la torre del Gremio con su reloj (marca la hora real del día de juego) y un sello gigante en lo alto, casas con puestos, la fuente con la estatua del fundador, farola, palomas que se espantan, charco que refleja el cielo.
+- **La gente que pasa** va en dos carriles (lejos y cerca). Algunos llevan efectos de pociones: uno flota, otro es un pato, otro mide un palmo. Los clientes a los que sirves salen a la plaza **con el efecto puesto**, y al día siguiente aparecen los de terceros (la suegra eructando humo). Si Ignatius se duerme, queda roncando en la plaza.
+- **La cola** se ve por la ventana: figuritas esperando a la derecha.
+- **El cliente** a medio cuerpo, con parpadeo y boca al hablar. Llega y se va deslizándose con pasos. Ignatius no cabe: asoma la cabeza, y su llegada hace temblar la pantalla.
+- **El bocadillo** está arriba, con el texto letra a letra (un toque lo completa).
+- **Mostrador:** libreta (abre los encargos), cuenco de monedas (crece con la caja), campanilla (llama al siguiente) y el edicto clavado en el marco (se abre al tocarlo).
+- **Vitrina:** 6 huecos bajo el mostrador; las pociones brillan con su color. Al tocar una, se levanta y aparece su ficha.
+- **Sellos de caucho:** Rechazar, Apuntar y Servir. Al pulsar, el sello golpea con salpicadura de tinta y sonido. Servir se ilumina cuando hay una poción elegida.
+- **Penumbra interior** con la luz del farol, y un haz de sol que entra por la ventanilla con motas de polvo.
 
-### 2.1 HUD superior
-Día y día de la semana · monedas · reputación en este pueblo · días hasta el alquiler (avisa en rojo si no llegas). Al tocarlo se abre el libro de cuentas.
-
-### 2.2 Ventanilla (arriba, para mirar)
-- **Calle** con paralaje: luz según la hora, clima, transeúntes y, por la ventana, la **cola** de los clientes que quedan.
-- **Cliente** a medio cuerpo, con parpadeo, gestos y reacciones (impaciencia, alegría, transformación).
-- **Bocadillo** con texto que se escribe letra a letra (un toque lo completa).
-- **Mostrador:** el cliente deja documentos, que se abren en grande al tocarlos para compararlos con el edicto. Aquí caen las monedas.
-- **Edicto del día** clavado en el marco, siempre a mano.
-- **Vitrina:** el stock, frascos que brillan según su rareza. Para servir se arrastra un frasco al mostrador.
-
-### 2.3 Franja de decisión (centro)
-Cambia según la fase:
-
-| Fase | Contenido |
-| --- | --- |
-| Taller | «Abrir ventanilla» (botón grande) · «Mercado» si es día de mercado |
-| Ventanilla, con cliente | Rechazar · Apuntar · Servir (Servir se ilumina al arrastrar un frasco) |
-| Ventanilla, sin cola | «Cerrar la tienda» |
-| Urgente | Frase del cliente y su barra de impaciencia (sin reloj duro) |
-
-### 2.4 Taller (abajo, para hacer)
-- **5 probetas** sobre el caldero: se llenan de líquido de color al echar ingredientes. Un ingrediente desconocido muestra sus esencias por primera vez aquí. Las opuestas se vacían con chispas al cancelarse.
-- **Caldero** en el centro: el líquido mezcla los colores en tiempo real.
-- **Selector de modo:** Hervir (fuelle) · Congelar (runa de escarcha) · Macerar (lente de luna).
-- **Minijuego:** remover en círculo con el dedo dentro del caldero y mantener la aguja de temperatura en la zona buena. Da la calidad.
-- **Predicción** bajo el caldero, solo para efectos ya descubiertos; si no, «→ ???».
-- **Mortero** (izquierda): soltar un ingrediente encima para majarlo antes.
-- **Alambique y barril:** soltar encima un frasco recién hecho para destilar o fermentar.
-- **Gus** (derecha): soltarle un frasco encima para probarlo. Sus 3 pruebas del día se ven como 3 caras de mareo.
-- **Embotellar:** un cazo; tirar de él hacia arriba llena el frasco, que vuela a la vitrina.
-
-### 2.5 Estante de ingredientes (abajo del todo)
-Tira horizontal de tarros, con desplazamiento lateral. Tocar y mantener muestra la ficha (esencias conocidas o «???», rasgo, cantidad). Se arrastra al caldero o al mortero; también vale tocar el tarro y luego el destino. El asa (⇡) lo despliega como cuadrícula completa con filtros por esencia.
-
-### 2.6 Barra inferior
-**Libreta** · **Códice** · **Puerta** (mercado y, más adelante, mapa) · **Menú**. Son los mismos objetos que hay en la escena, para quien no quiera buscarlos.
+### 2.3 Taller
+```
+┌──────────────────────────────────┐
+│ HUD    🔔 Sra. Pellejo espera…   │ aviso si hay alguien en la ventanilla
+│ ◯ ventana    [licencia]    🕯 🫙  │
+│ 🫙🕯       5    1                │ cifras sobre las probetas
+│        ║ ║ ║ ║ ║                 │ 5 probetas
+│        🔥 💧 🌿 🌬 🌀              │
+│   [→ Silencio · Normal · + hipo] │ predicción
+│          ╭──────────╮       🧌   │ caldero · Gus en su taburete
+│   ⚗️     ╰──────────╯       🛢   │ alambique · barril
+│              🔥🔥                │ hogar (fuego, escarcha o luna)
+│ [📖] [Hervir][Congelar][Macerar] [Embotellar]
+│ ◂ tarros del estante ▸           │
+│  Ventanilla    Taller   Mercado  │
+└──────────────────────────────────┘
+```
+- **Estante de ingredientes** abajo: se toca un tarro y salta al caldero en parábola, con salpicadura y ondas. Los desconocidos muestran «? ? ?» hasta la primera vez.
+- **Espíritus de esencia:** salen del caldero y vuelan a su probeta, que se llena. Las opuestas se anulan con chispas y siseo.
+- **Modo del caldero:** Hervir (llamas bajo el caldero), Congelar (escarcha y vapor frío), Macerar (un haz de luna entra por la ventana).
+- **Predicción:** «→ ??? · Normal» hasta descubrir el efecto; después, el nombre y el secundario. En Desmedido, el aviso tiembla y el caldero también.
+- **Remover:** se dibujan círculos con el dedo dentro del caldero. A buen ritmo aparece un anillo de runas y sube la calidad (★ a ★★★). Demasiado rápido, salpica.
+- **Embotellar:** el líquido baja, el frasco sube con una columna de luz del color de su calidad y estalla en chispas.
+- **Gus** reacciona al tocarlo, prueba pociones (3 al día) y se transforma: se calla, flota, se vuelve pato…
+- **¡BUM!** Con 10 o más puntos en una esencia: el caldero tiembla, explota (destello, sacudida, parón de un instante, escombros) y el hollín cubre la pantalla hasta que lo limpias con el dedo. Gus se queda tiznado el resto del día.
 
 ## 3. Pantallas y paneles
 
@@ -143,9 +152,9 @@ Portada → [Amanecer: Gaceta → Edicto] → Taller ⇄ Mercado
 - Textos en `src/i18n/es.json` desde el principio. Las plantillas de la Gaceta y de los clientes usan marcadores (`{cliente}`, `{efecto}`) y concordancia de género y número.
 - Tamaño de texto ajustable.
 
-## 8. Pendiente de validar con los mockups
+## 8. Pendiente de validar con el mockup
 
-- [ ] ¿Caben en 180 px de ancho la vitrina, las probetas y el estante sin agobiar?
-- [ ] ¿La franja de decisión al centro se alcanza bien con el pulgar?
+- [ ] ¿El giro de cámara entre estaciones se siente bien, o mejor otro movimiento (vertical, rotación)?
 - [ ] ¿El minijuego de remover es divertido o cansa a la décima poción? (Para eso está la elaboración rápida.)
-- [ ] ¿La cola de clientes se lee bien por la ventana?
+- [ ] ¿La cola de clientes y los efectos en la gente que pasa se leen bien?
+- [ ] ¿Gus como probador encaja, o prefieres otra forma de descubrir?
