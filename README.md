@@ -8,4 +8,4 @@ Juego de alquimia para móvil (y primero en el navegador): regentas una botica e
 - [Plan de desarrollo](docs/plan-desarrollo.md)
 - [Mockup jugable](docs/mockup/vialix.html) (ábrelo en el navegador)
 
-**Estado:** fase 1, mockups. Ya se puede jugar un primer mockup con la ventanilla, el taller, Gus, la Gaceta y el giro de cámara entre estaciones.
+**Estado:** fase 1, mockups. Ya se puede jugar un mockup con la ventanilla (una calle en 3D con clima detrás del cristal), el taller con el caldero visto desde arriba, Gus, la Gaceta y el giro de cámara entre estaciones.

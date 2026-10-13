@@ -22,7 +22,9 @@ Como en AdventurersGuild: cada pieza es una rejilla de caracteres o un pincel qu
 
 ## Efectos
 
-- **Líquido del caldero:** shader con mezcla de color, ondas, burbujas y espuma.
+- **Líquido del caldero:** shader de píxeles cuantizado a 5 tonos con remolinos, brillo, ondas, burbujas y espuma.
+- **La calle en 3D:** pixel art pintado en reposo y reproyectado sobre un diorama (suelo en perspectiva, fachadas laterales, piezas a su distancia), al estilo de las calles de las aventuras gráficas pero con paralaje real al girar.
+- **Gente de la calle:** figuras montadas por piezas con sombreado automático (luz por la izquierda, contorno de color, línea donde una pieza tapa a otra), de 16 a 70 píxeles y cuatro fotogramas de paso.
 - **Partículas en GPU:** espíritus de esencia, vapor, chispas, humo, monedas, polvo.
 - **Luz dinámica:** el caldero ilumina el taller con el color de la mezcla; las velas parpadean.
 - **Cámara:** sacudida, destello y *hit-stop*.
