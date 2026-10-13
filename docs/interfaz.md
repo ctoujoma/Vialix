@@ -5,7 +5,7 @@
 ## 1. Principios
 
 1. **Cada estación tiene su pantalla.** La tienda es un espacio que la cámara recorre: la ventanilla, el taller y, más adelante, el mercado. Cada una ocupa la pantalla entera; nada de meterlo todo junto.
-2. **La cámara gira entre estaciones.** Se desliza el dedo o se toca la pestaña, y la cámara hace un barrido (desenfoque de movimiento, líneas de velocidad, cambio de luz). Debe sentirse como darse la vuelta dentro de la tienda.
+2. **La cámara gira entre estaciones.** Se desliza el dedo (la cámara sigue al dedo y se suelta sola) o se toca la pestaña. Por defecto es un **giro 3D desde dentro**, como darse la vuelta dentro de la tienda. El mockup permite comparar con el **cubo 3D** visto desde fuera y con el **barrido lateral** desde el botón de cámara del HUD.
 3. **El fondo da vida al pueblo.** Por la ventanilla se ve la plaza: gente que pasa, palomas, la fuente, la torre del Gremio, la hora del día. Y en la gente que pasa se ven los efectos de lo que vendes.
 4. **Vertical y con una mano.** Las acciones están en la mitad inferior, al alcance del pulgar.
 5. **La escena es el tutorial.** Las probetas, el caldero y Gus explican el sistema con animaciones, sin muros de texto.
@@ -58,7 +58,8 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 - **El cliente** a medio cuerpo, con parpadeo y boca al hablar. Llega y se va deslizándose con pasos. Ignatius no cabe: asoma la cabeza, y su llegada hace temblar la pantalla.
 - **El bocadillo** está arriba, con el texto letra a letra (un toque lo completa).
 - **Mostrador:** libreta (abre los encargos), cuenco de monedas (crece con la caja), campanilla (llama al siguiente) y el edicto clavado en el marco (se abre al tocarlo).
-- **Vitrina:** 6 huecos bajo el mostrador; las pociones brillan con su color. Al tocar una, se levanta y aparece su ficha.
+- **Vitrina:** 6 huecos bajo el mostrador, con frascos grandes que brillan con su color y huecos vacíos visibles. Un cartel sobre ella dice qué hacer: «Vitrina vacía · prepara la poción en el Taller ▶» (se toca para ir), «Toca una poción o arrástrala hasta…» o «Pulsa SERVIR…».
+- **Servir:** se arrastra el frasco hasta el cliente (se ilumina al pasar por encima), o se toca el frasco y luego el sello Servir. Desde el taller, si hay alguien esperando, la tarjeta de la poción ofrece **«Servir a…»**: la cámara gira sola y el frasco vuela al cliente.
 - **Sellos de caucho:** Rechazar, Apuntar y Servir. Al pulsar, el sello golpea con salpicadura de tinta y sonido. Servir se ilumina cuando hay una poción elegida.
 - **Penumbra interior** con la luz del farol, y un haz de sol que entra por la ventanilla con motas de polvo.
 
@@ -79,6 +80,7 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 │  Ventanilla    Taller   Mercado  │
 └──────────────────────────────────┘
 ```
+- **Contador de la vitrina** arriba a la derecha («Vitrina 1/6 · servir ▶»), que lleva a la ventanilla.
 - **Estante de ingredientes** abajo: se toca un tarro y salta al caldero en parábola, con salpicadura y ondas. Los desconocidos muestran «? ? ?» hasta la primera vez.
 - **Espíritus de esencia:** salen del caldero y vuelan a su probeta, que se llena. Las opuestas se anulan con chispas y siseo.
 - **Modo del caldero:** Hervir (llamas bajo el caldero), Congelar (escarcha y vapor frío), Macerar (un haz de luna entra por la ventana).
