@@ -124,8 +124,10 @@ La gramática de una poción:
 | Paso | Dónde | Efecto |
 | --- | --- | --- |
 | Majar | Mortero, antes de echar el ingrediente | Efecto inmediato y más intensidad de ese ingrediente |
-| Destilar | Alambique, después de embotellar | Quita el efecto secundario, más pureza (cuesta volumen) |
+| Destilar | Alambique, después de embotellar | Quita el efecto secundario, pero **baja un escalón de intensidad** (se pierde volumen). Un Leve no se puede destilar. El alambique tiene **2 usos al día** (ampliable) |
 | Fermentar | Barril, después de embotellar | Más duración. **Tarda 1 día** (está lista al amanecer) |
+
+**Destilar es una decisión, no un trámite.** Cada cliente opina del efecto secundario: a Sir Mantecas o a Gorzag les molesta (baja la satisfacción), a Lirio Dorado o a la Sra. Pellejo les encanta (la sube), y a otros les da igual. Y si un cliente necesita intensidad (Ignatius pide «dosis de dragón», Fuerte como mínimo), destilar le deja corto.
 
 ### 4.4 Tabla de efectos base (5 × 3 = 15)
 
@@ -259,7 +261,14 @@ Todo el texto se genera con plantillas e idiomas intercambiables: nada de texto 
 - **Gastos:** ingredientes, alquiler semanal (el casero lo sube), tasas del Gremio, multas y sobornos.
 - **Derrota blanda:** si no pagas el alquiler, desahucio. Por decidir si se pierde la partida o se pasa a ambulante a la fuerza.
 
-## 10. Por decidir
+## 10. Para el juego completo (apuntado tras probar los mockups)
+
+- **Tutorial y guía inicial.** El primer día empieza con la tienda cerrada: una carta de la antigua dueña (o Gus, a regañadientes) enseña a echar ingredientes, cocer, remover, embotellar y servir. Se descubren los primeros efectos con una receta guiada.
+- **Preapertura.** Antes de abrir al público por primera vez hay un tiempo para hacer stock con calma, sin clientes, y llenar la vitrina.
+- **Ampliar la vitrina.** 6 huecos al principio; mejoras de la tienda para pasar a 9, 12… y el **almacén** (la pared de atrás) como depósito de pociones y de ingredientes.
+- **Mejoras del alambique** (más usos al día) y de otras herramientas.
+
+## 11. Por decidir
 
 - [ ] Montura de la tienda ambulante: caracol gigante, gólem o carromato.
 - [ ] ¿Vialix comparte mundo con AdventurersGuild? (su diseño ya lo menciona: héroes del gremio como clientes, cameos).

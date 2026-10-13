@@ -5,7 +5,7 @@
 ## 1. Principios
 
 1. **Cada estación tiene su pantalla.** La tienda es un espacio que la cámara recorre: la ventanilla, el taller y, más adelante, el mercado. Cada una ocupa la pantalla entera; nada de meterlo todo junto.
-2. **La cámara gira entre estaciones.** Se desliza el dedo (la cámara sigue al dedo y se suelta sola) o se toca la pestaña. Por defecto es un **giro 3D desde dentro**, como darse la vuelta dentro de la tienda. El mockup permite comparar con el **cubo 3D** visto desde fuera y con el **barrido lateral** desde el botón de cámara del HUD.
+2. **La tienda es una habitación 3D.** La cámara está en el centro de un cubo y gira sobre sí misma: delante la **ventanilla**, a la derecha el **taller**, detrás el **almacén** y a la izquierda la **puerta al mercado**. Al girar se ven el suelo (tablones y una alfombra con el círculo alquímico) y el techo (vigas, lámpara de velas, hierbas colgadas y un cocodrilo disecado). Se gira deslizando el dedo (la cámara lo sigue y la vuelta es continua) o con las pestañas. El botón de cámara del HUD permite comparar con el cubo visto desde fuera y con el barrido lateral.
 3. **El fondo da vida al pueblo.** Por la ventanilla se ve la plaza: gente que pasa, palomas, la fuente, la torre del Gremio, la hora del día. Y en la gente que pasa se ven los efectos de lo que vendes.
 4. **Vertical y con una mano.** Las acciones están en la mitad inferior, al alcance del pulgar.
 5. **La escena es el tutorial.** Las probetas, el caldero y Gus explican el sistema con animaciones, sin muros de texto.
