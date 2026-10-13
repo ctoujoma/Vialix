@@ -290,7 +290,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <h1 id="logo">Vialix</h1>
     <div class="tag">Botica de la plaza. Atiende la ventanilla, <em>interpreta</em> lo que piden y experimenta en el caldero.</div>
     <button class="btn gold big glowy" id="bStart">Abrir la botica</button>
-    <div class="ver">Mockup jugable · v0.6 · Desliza o usa las pestañas para girar la cámara</div>
+    <div class="ver">Mockup jugable · v0.6.1 · Desliza o usa las pestañas para girar la cámara</div>
   </div>
   <div id="ovEdict" class="ov" hidden></div>
   <div id="ovCard" class="ov" hidden></div>
@@ -1116,8 +1116,8 @@ function resize(){
 }
 // Cámara: cada estación es una cara. «inside» gira como si te dieras la vuelta dentro de la tienda,
 // «cube» gira un cubo visto desde fuera y «slide» es el barrido lateral del primer mockup.
-const CAMS=['inside','cube','slide'],CAMN={inside:'Giro 3D: te das la vuelta dentro de la tienda',cube:'Cubo 3D',slide:'Barrido lateral'};
-let camMode='cube';try{const c=localStorage.getItem('vialix-cam2');if(CAMS.includes(c))camMode=c}catch(_){}
+const CAMS=['cube','slide','inside'],CAMN={inside:'Giro 3D: te das la vuelta dentro de la tienda',cube:'Cubo 3D',slide:'Barrido lateral'};
+let camMode='cube';try{const c=localStorage.getItem('vialix-cam3');if(CAMS.includes(c))camMode=c}catch(_){}
 const cam={x:0,from:0,to:0,t:1,dur:.8,drag:false};
 let shake=0,flash=0,hitstop=0,clock=0;
 const NST=4,mod4=x=>((x%NST)+NST)%NST;
@@ -1231,7 +1231,7 @@ const V={buf:null,g:null,parts:[],walkers:[],queueFig:[],pigeons:[],clouds:[],cl
   spawnWalker(){const r=Math.random();const lane=PZ.lanes[r<.45?0:r<.72?1:2];const dir=Math.random()<.5?1:-1;
     let w;const sp=S.carry.length&&lane===PZ.lanes[0]&&Math.random()<.5?S.carry[(Math.random()*S.carry.length)|0]:null;
     if(sp){w={spec:sp.small,mods:sp.mods,name:sp.name}}
-    else if(Math.random()<.3&&S.ambient.length){const a=pick(S.ambient);w={spec:a.spec,mods:a.mods}}
+    else if(Math.random()<.1&&S.ambient.length){const a=pick(S.ambient);w={spec:a.spec,mods:a.mods}}
     else w={spec:randSpec(),mods:{}};
     if(WX.c.rain>.4&&!w.spec.item&&w.spec.hat!=='helmet'&&Math.random()<.75)w.spec=Object.assign({},w.spec,{item:'umbrella'});
     const spr=buildPerson(w.spec,lane.h);const y=lane.y+Math.round(rnd(-1,1)*lane.k*5);
@@ -1362,7 +1362,7 @@ function pzEye(){const still=cam.t>=1&&!cam.drag;PZ.still=still;if(still){PZ.ex=
   let ex=0,ez=PZ.EZ;
   if(camMode==='cube'){const hl=ROOM.L/2,P=cssW*2.4,k=Math.abs(cam.x-Math.round(cam.x)),a=cam.x*Math.PI/2,D=P+hl+k*cssW*.9;ex=D*Math.sin(a)/u*PZ.EZ/(P/u);ez=(D*Math.cos(a)-hl)/u*PZ.EZ/(P/u)}
   else if(camMode==='slide')ex=-wrapOff(0)*W*1.2;
-  PZ.ex=230*Math.tanh(ex/230);PZ.ez=Math.max(PZ.EZ*.5,ez);PZ.still=Math.abs(PZ.ex)<.01&&Math.abs(PZ.ez-PZ.EZ)<.01}
+  PZ.ex=210*Math.tanh(ex/210);PZ.ez=Math.max(PZ.EZ*.6,ez);PZ.still=Math.abs(PZ.ex)<.01&&Math.abs(PZ.ez-PZ.EZ)<.01}
 function pzSet(g,P){g.setTransform(P.s,0,0,P.s,P.tx,P.ty)}
 // ── colores numéricos para los lienzos grandes ──
 const PALC=new Map();function rgbOf(h){let v=PALC.get(h);if(!v){v=h2r(h);PALC.set(h,v)}return v}
@@ -1376,20 +1376,21 @@ function gTex(X,Z,vr){const G=PZ.G,XS=PZ.XS,d1=PZ.d1;
   if(Z<52){const c=flag(X,Z,34,26);set=c.s;v=c.v}
   else if(Z<64){set='curb';v=Z<56?3:Z>61?1:2}
   else if(Z>d1-40&&ax>XS-44){if(ax<XS-38){set='curb';v=X>0?(ax<XS-41?3:1):(ax<XS-41?1:3)}else{const c=flag(X,Z,30,24);set=c.s;v=c.v}}
-  else if(Z<d1-40){const c=cob(X,Z,8,12,0);set=c.s;v=c.v}
+  else if(Z<d1-40){const c=cob(X,Z,12,18,0);set=c.s;v=c.v}
   else{const fz=PZ.fount;const rr=Math.hypot(X-fz.x,Z-fz.z);
     if(rr<fz.R){const ri=Math.floor(rr/15),ang=Math.atan2(Z-fz.z,X-fz.x);const seg=Math.floor((ang+Math.PI)*rr/13);const fr=rr/15-ri,fa=((ang+Math.PI)*rr/13)%1;if(fr<.12||fa<.1){set='mortar';v=1}else{set=['mosA','mosB','mosA','mosC'][ri%4];v=2+(fr>.8?-.7:0)+(fa<.25?.7:0)+(hx2(ri,seg)-.5)*.6}}
     else if(ax<8){set='gut';v=ax<3?.6:ax<6?1.4:(X<0?3:1)}
-    else{const c=cob(X,Z,9,13,9);set=c.s;v=c.v}}
+    else{const c=cob(X,Z,13,19,10);set=c.s;v=c.v}}
   let pal=sh?G[set].S:G[set].L;
   if(vr==='wet'){if(set!=='mortar'&&set!=='gut')v=v-.35+(v>2.6?.6:0);for(const p of PZ.puddles){const dx=(X-p.x)/p.rx,dz=(Z-p.z)/p.rz,q=dx*dx+dz*dz;if(q<1){pal=G.pud.L;v=q>.82?1:(Math.sin(X*.09+Z*.02)>.92?3.6:2);break}}}
   if(vr==='snow'){const sn=hx2(Math.floor(X/9),Math.floor(Z/7));if(sn>.14||set==='curb'){pal=sh?G.snow.S:G.snow.L;v=2+(v-2)*.35+(Math.abs(Z-PZ.lanes[0].d)<26||Math.abs(Z-PZ.lanes[1].d)<20?-.8:0)}}
   return pal[clamp(Math.round(v),0,4)]}
-function cob(X,Z,rh,sw,wav){const zz=Z+(wav?Math.sin(X/57)*wav:0);const row=Math.floor(zz/rh),fz=zz/rh-row;const s2=sw*(.85+hx2(row,1)*.35);const xx=X+hx2(row,7)*s2;const col=Math.floor(xx/s2),fx=xx/s2-col;
-  const ex=Math.abs(fx-.5)*2,ez=Math.abs(fz-.5)*2,q=ex*ex*ex*ex+ez*ez*ez*ez,hv=hx2(row,col);
-  if(q>.5+hv*.2)return{s:hv<.08?'moss':'mortar',v:1};
-  return{s:['cA','cB','cC','cD','cE'][Math.floor(hv*5)],v:2+(fz>.66?.9:0)+(fx<.24?.5:0)-(fz<.3?.8:0)-(fx>.8?.5:0)+(hx2(col*3,row*5)-.5)*.5}}
-function flag(X,Z,sw,sh){const row=Math.floor(Z/sh),fz=Z/sh-row;const xx=X+(row%2)*sw*.5;const col=Math.floor(xx/sw),fx=xx/sw-col;const hv=hx2(row*7,col);if(fx<.05||fz<.07)return{s:'mortar',v:1.6};return{s:hv<.5?'fA':'fB',v:2+(fz>.85?.8:0)+(fx<.12?.4:0)+(hv-.5)*.6-(hx2(Math.floor(X/3),Math.floor(Z/3))<.06?.8:0)}}
+// adoquín: piedra redondeada con luz arriba a la izquierda y junta oscura; sin ruido por píxel
+function cob(X,Z,rh,sw,wav){const zz=Z+(wav?Math.sin(X/61)*wav:0);const row=Math.floor(zz/rh),fz=zz/rh-row;const s2=sw*(.9+hx2(row,1)*.25);const xx=X+hx2(row,7)*s2;const col=Math.floor(xx/s2),fx=xx/s2-col;
+  const gx=1.7/s2,gz=1.7/rh,hv=hx2(row,col);if(fx<gx||fz<gz)return{s:hv<.06?'moss':'mortar',v:1.2};
+  const u=(fx-gx)/(1-gx),w=(fz-gz)/(1-gz);
+  return{s:['cA','cB','cC','cD','cE'][Math.floor(hv*5)],v:2+(w>.74?.75:0)-(w<.22?.7:0)+(u<.16?.35:0)-(u>.86?.4:0)+(hx2(col*3,row*5)-.5)*.35}}
+function flag(X,Z,sw,sh){const row=Math.floor(Z/sh),fz=Z/sh-row;const xx=X+(row%2)*sw*.5;const col=Math.floor(xx/sw),fx=xx/sw-col;const hv=hx2(row*7,col);if(fx<1.8/sw||fz<1.8/sh)return{s:'mortar',v:1.6};return{s:hv<.5?'fA':'fB',v:2+(fz>.85?.7:0)+(fx<.1?.35:0)+(hv-.5)*.4}}
 function pzPalettes(){const G={};const add=(k,b)=>{G[k]={L:gr5(b,0),S:gr5(b,1)}};
   add('cA','#a3978a');add('cB','#ada08e');add('cC','#958b80');add('cD','#b4a894');add('cE','#9c9488');add('mortar','#6a6058');add('moss','#5f7a48');add('gut','#7a7268');add('curb','#b7ab98');add('fA','#c1b49c');add('fB','#b3a68f');add('mosA','#cdbfa2');add('mosB','#8d8578');add('mosC','#b5866a');
   G.pud={L:['#4a5470','#6a7898','#8a9ab8','#b0bed6','#e6eefa'],S:['#3a4060','#55607e','#707e9c','#98a6c2','#d0dcef']};
@@ -1398,12 +1399,11 @@ function pzPalettes(){const G={};const add=(k,b)=>{G[k]={L:gr5(b,0),S:gr5(b,1)}}
 // el suelo «en reposo»: cada fila de la imagen es una franja del plano a su distancia (con supermuestreo)
 function buildGround(vr){const x0=Math.floor(PZ.CX-PZ.MG),w=Math.ceil(PZ.MG*2),y0=PZ.HY+1,h=V.cy+6-y0;const[c,g]=mk(w,h);const id=g.createImageData(w,h),d=id.data;
   const HC=rgbOf(PZ.haze);const smp=[];
-  for(let j=0;j<h;j++){const yc=y0+j+.5,k0=(yc-PZ.HY)/PZ.HE,Z0=dOf(k0);const dzdy=PZ.EZ*PZ.HE/Math.pow(yc-PZ.HY,2);const nz=clamp(Math.ceil(dzdy/7),1,5),nx=clamp(Math.ceil(1/k0/6),1,3);const hz=clamp((Z0-1400)/7000,0,.55);
+  for(let j=0;j<h;j++){const yc=y0+j+.5,k0=(yc-PZ.HY)/PZ.HE,Z0=dOf(k0);const dzdy=PZ.EZ*PZ.HE/Math.pow(yc-PZ.HY,2);const nz=clamp(Math.ceil(dzdy/4),1,7),nx=clamp(Math.ceil(1/k0/3),1,4);const hz=clamp((Z0-1400)/7000,0,.55);
     for(let i=0;i<w;i++){const o=(j*w+i)*4;
       if(Z0>PZ.DF+500){const v=rgbOf(PZ.G.cB.L[2]);d[o]=lerp(v[0],HC[0],.6);d[o+1]=lerp(v[1],HC[1],.6);d[o+2]=lerp(v[2],HC[2],.6);d[o+3]=255;continue}
-      smp.length=0;for(let a=0;a<nz;a++){const yy=y0+j+(a+.5)/nz,k=(yy-PZ.HY)/PZ.HE,Z=dOf(k);for(let b=0;b<nx;b++){const X=(x0+i+(b+.5)/nx-PZ.CX)/k;smp.push(gTex(X,Z,vr))}}
-      let best=smp[0],bn=0;for(let a=0;a<smp.length;a++){let n=0;for(let b=0;b<smp.length;b++)if(smp[b]===smp[a])n++;if(n>bn){bn=n;best=smp[a]}}
-      const v=rgbOf(best);d[o]=lerp(v[0],HC[0],hz);d[o+1]=lerp(v[1],HC[1],hz);d[o+2]=lerp(v[2],HC[2],hz);d[o+3]=255}}
+      let sr=0,sg=0,sb=0,n=0;for(let a=0;a<nz;a++){const yy=y0+j+(a+.5)/nz,k=(yy-PZ.HY)/PZ.HE,Z=dOf(k);for(let b=0;b<nx;b++){const X=(x0+i+(b+.5)/nx-PZ.CX)/k;const v=rgbOf(gTex(X,Z,vr));sr+=v[0];sg+=v[1];sb+=v[2];n++}}
+      d[o]=lerp(sr/n,HC[0],hz);d[o+1]=lerp(sg/n,HC[1],hz);d[o+2]=lerp(sb/n,HC[2],hz);d[o+3]=255}}
   g.putImageData(id,0,0);return{img:c,x:x0,y:y0,w,h}}
 // ── las fachadas de los lados: una tira pintada de frente que se proyecta sobre un plano que se aleja ──
 function paintStrip(seed,night){const ph=30,tx=1.06*PZ.HE/ph;const len=Math.ceil((PZ.DF-PZ.d1)/tx)+6,hgt=Math.round(ph*7.2),base=hgt-1;const[c,g]=mk(len,hgt);const r=mulberry(seed);const L=[];L.chim=[];L.lamps=[];
@@ -1468,20 +1468,32 @@ function paintFarCity(night){const w=PZ.pw,h=80;const[c,g]=mk(w,h);const r=mulbe
   const dx=Math.round(w*.62),db=Math.round(hill(dx))-2;E(g,dx,db-9,8,7,'#7a84b0');R(g,dx-8,db-9,16,9,'#7a84b0');E(g,dx-2,db-12,3,3,'#8d97c2');R(g,dx-1,db-20,2,5,'#e8a33a');P(g,dx,db-22,'#ffd34d');
   return c}
 // ── objetos de la calle ──
-function paintFountain(ph){const rx=Math.round(ph*1.25),ry=Math.max(3,Math.round(ph*.3)),wh=Math.round(ph*.36),H=Math.round(ph*3);const W2=rx*2+6;const[c,g]=mk(W2,H+ry*2+4);const cx=W2/2,base=c.height-2,top=base-wh-ry;const st=rp('#bdb5a6');
-  // pared del pilón: cilindro con luz por la izquierda
-  for(let x=-rx;x<=rx;x++){const f=x/rx,yb=Math.sqrt(Math.max(0,1-f*f))*ry;const l=1.9-f*1.3;for(let y=0;y<wh;y++){const v=l-(y>wh-3?.6:0)+(y<1?.6:0);P(g,cx+x,top+yb+y,st[clamp(qd(v,x,y),0,4)])}if(((x+rx)%Math.max(4,Math.round(ph*.32)))===0)for(let y=1;y<wh-1;y++)P(g,cx+x,top+yb+y,st[0])}
-  // borde y agua
-  for(let y=-ry-2;y<=ry+2;y++)for(let x=-rx-1;x<=rx+1;x++){const q=(x*x)/((rx+.5)*(rx+.5))+(y*y)/((ry+.5)*(ry+.5));if(q>1)continue;const qi=(x*x)/((rx-2.5)*(rx-2.5))+(y*y)/((ry-1.5)*(ry-1.5));if(qi>1){P(g,cx+x,top+y,y<0?st[4]:(x>rx*.4?st[2]:st[3]))}else{const d2=(y+ry)/(ry*2);P(g,cx+x,top+y+1,d2<.25?'#2a5a84':d2<.6?'#3a76a6':'#4c8cc0')}}
-  // pedestal, taza y estatua
-  const pw=Math.max(3,Math.round(ph*.24)),pht=Math.round(ph*.85),py=top-pht+2;for(let y=0;y<pht;y++)for(let x=0;x<pw;x++){const f=(x+.5)/pw*2-1;P(g,cx-pw/2+x,py+y,st[clamp(qd(2.2-f*1.3-(y%Math.max(3,Math.round(ph*.25))===0?.8:0),x,y),0,4)])}
-  const crx=Math.round(ph*.5),cry=Math.max(2,Math.round(ph*.13));for(let y=-cry;y<=cry+2;y++)for(let x=-crx;x<=crx;x++){const q=x*x/(crx*crx)+y*y/(cry*cry);if(y<=0&&q>1)continue;if(y>0&&x*x/(crx*crx)>1-Math.pow(y/(cry+2),2)*.6)continue;const inner=x*x/((crx-1.5)*(crx-1.5))+y*y/((cry-1)*(cry-1))<1&&y<=0;P(g,cx+x,py+y,inner?'#3a76a6':y>0?st[clamp(Math.round(2-x/crx*1.2),0,4)]:st[3])}
-  const p=pcv(Math.round(ph*1.4),Math.round(ph*1.3));const sx=p.w/2,sb=p.h-1,sv={line:true};const iR=pPart(p,'#5f8a7a',{grad:.5}),iA=pPart(p,'#5f8a7a',{lift:.2}),iH=pPart(p,'#6f9a88',{line:false}),iHat=pPart(p,'#4f7a6a',{lift:.3}),iS=pPart(p,'#a87a3a',{lift:.3}),iB=pPart(p,'#8a5a2a');
-  const sh=ph*.95;pPoly(p,[[sx-ph*.16,sb-sh*.72],[sx+ph*.16,sb-sh*.72],[sx+ph*.26,sb],[sx-ph*.28,sb]],iR);pEll(p,sx,sb-sh*.8,ph*.12,ph*.13,iH);pRect(p,sx-ph*.22,sb-sh*.92,ph*.44,Math.max(1,ph*.06),iHat);pEll(p,sx,sb-sh*.95,ph*.12,ph*.08,iHat);
-  pLine(p,sx+ph*.12,sb-sh*.66,sx+ph*.3,sb-sh*1.02,Math.max(1,ph*.08),iA);pRect(p,sx+ph*.27,sb-sh*1.2,Math.max(1,ph*.06),ph*.2,iB);pRect(p,sx+ph*.18,sb-sh*1.3,ph*.24,ph*.1,iS);
-  pLine(p,sx-ph*.12,sb-sh*.66,sx-ph*.22,sb-sh*.38,Math.max(1,ph*.08),iA);pRect(p,sx-ph*.34,sb-sh*.42,ph*.2,ph*.14,pPart(p,'#d8cfa8',{lift:.4}));
-  const statue=pRender(p,'#2a3a34');g.drawImage(statue,Math.round(cx-statue.width/2),Math.round(py-cry-statue.height+3));
-  return{img:c,ox:cx,base,spout:{x:cx,y:py-1},bowl:{x:cx,y:top+1,rx:rx-3,ry:ry-1.5},cup:{x:cx,y:py,rx:crx}}}
+// la fuente, vista con el ángulo que le toca: a su distancia el ojo está casi a su altura, así que los círculos
+// se ven como elipses muy planas (cuanto más alto, más planas) y la taza de arriba, por encima del ojo, se ve por debajo
+function paintFountain(ph,k){const d=dOf(k),rat=hp=>(PZ.HE-hp/k)/d;const st=rp('#a39888'),wat=['#2a5a84','#3a76a6','#5a98cc','#9ad0f0'];
+  const rx=Math.round(ph*1.3),wh=Math.round(ph*.34),ryB=Math.max(1,rx*rat(0)),ryT=Math.max(.8,rx*rat(wh));
+  const pw=Math.max(3,Math.round(ph*.22)),pht=Math.round(ph*.8),crx=Math.round(ph*.55),cth=Math.max(2,Math.round(ph*.16));
+  const W2=rx*2+6,H2=Math.round(wh+pht+cth+ph*1.5+ryB*2+8);const[c,g]=mk(W2,H2);const cx=W2/2,cyB=H2-2-ryB;const cyT=cyB-wh;
+  // pared del pilón: entre la curva de arriba y la de abajo, con luz por la izquierda y juntas
+  for(let x=-rx;x<=rx;x++){const f=x/rx,sq=Math.sqrt(Math.max(0,1-f*f));const y0=Math.round(cyT+ryT*sq),y1=Math.round(cyB+ryB*sq);const l=2.1-f*1.2;
+    for(let y=y0;y<=y1;y++){const v=l+(y===y0?.9:0)-(y>=y1-1?.7:0);P(g,cx+x,y,st[clamp(Math.round(v),0,4)])}
+    if(((x+rx)%Math.max(4,Math.round(ph*.34)))===0&&Math.abs(f)<.92)for(let y=y0+2;y<y1-1;y++)P(g,cx+x,y,st[1])}
+  // borde de arriba y la lámina de agua: muy finos, porque se miran casi de canto
+  for(let y=Math.floor(cyT-ryT)-1;y<=Math.ceil(cyT+ryT);y++)for(let x=-rx;x<=rx;x++){const q=x*x/(rx*rx)+((y+.5-cyT)*(y+.5-cyT))/((ryT+.6)*(ryT+.6));if(q>1)continue;const qi=x*x/((rx-3)*(rx-3))+((y+.5-cyT)*(y+.5-cyT))/(Math.max(.3,ryT-.6)*Math.max(.3,ryT-.6));P(g,cx+x,y,qi<1?wat[clamp(Math.round(1+(y-cyT+ryT)/(ryT*2+.01)*1.6),0,3)]:(y<cyT?st[4]:st[3]))}
+  // pedestal
+  const pyT=cyT-pht;for(let y=pyT;y<cyT;y++)for(let x=0;x<pw;x++){const f=(x+.5)/pw*2-1;P(g,cx-pw/2+x,y,st[clamp(Math.round(2.2-f*1.3-(((y-pyT)%Math.max(4,Math.round(ph*.28)))===0?.8:0)),0,4)])}
+  // taza alta: está por encima del ojo, así que se le ve la panza y no el agua
+  const hc=wh+pht,ryC=Math.max(.8,crx*Math.abs(rat(hc+cth))),cyC=pyT;
+  for(let x=-crx;x<=crx;x++){const f=x/crx,sq=Math.sqrt(Math.max(0,1-f*f));const top=Math.round(cyC-cth-ryC*sq),bot=Math.round(cyC+ryC*sq*.6+ (1-Math.abs(f))*cth*.4);for(let y=top;y<=bot;y++){const v=(y===top?3.2:2.1)-f*1.1-(y>bot-2?.6:0);P(g,cx+x,y,st[clamp(Math.round(v),0,4)])}}
+  for(let x=-crx+1;x<crx;x+=2)P(g,cx+x,Math.round(cyC-cth-ryC*Math.sqrt(Math.max(0,1-(x/crx)*(x/crx))))-1,'#9ad0f0');
+  // el fundador del Gremio, en bronce con verdín
+  const p=pcv(Math.round(ph*1.3),Math.round(ph*1.35));const sx=p.w/2,sb=p.h-1;const iR=pPart(p,'#5f8a7a',{grad:.5}),iA=pPart(p,'#5f8a7a',{lift:.2}),iH=pPart(p,'#6f9a88',{line:false}),iHat=pPart(p,'#4f7a6a',{lift:.3}),iS=pPart(p,'#a87a3a',{lift:.3}),iB=pPart(p,'#8a5a2a'),iBk=pPart(p,'#d8cfa8',{lift:.4});
+  const sh=ph*.95;pPoly(p,[[sx-ph*.15,sb-sh*.7],[sx+ph*.15,sb-sh*.7],[sx+ph*.24,sb],[sx-ph*.26,sb]],iR);pEll(p,sx,sb-sh*.79,ph*.11,ph*.12,iH);pRect(p,sx-ph*.2,sb-sh*.9,ph*.4,Math.max(1,ph*.05),iHat);pEll(p,sx,sb-sh*.93,ph*.11,ph*.07,iHat);
+  pLine(p,sx+ph*.11,sb-sh*.64,sx+ph*.28,sb-sh*1.0,Math.max(1,ph*.08),iA);pRect(p,sx+ph*.25,sb-sh*1.17,Math.max(1,ph*.06),ph*.2,iB);pRect(p,sx+ph*.16,sb-sh*1.27,ph*.24,ph*.1,iS);
+  pLine(p,sx-ph*.11,sb-sh*.64,sx-ph*.2,sb-sh*.38,Math.max(1,ph*.08),iA);pRect(p,sx-ph*.32,sb-sh*.42,ph*.18,ph*.14,iBk);
+  const statue=pRender(p,'#2a3a34');g.drawImage(statue,Math.round(cx-statue.width/2),Math.round(cyC-cth-ryC-statue.height+3));
+  const oc=outline(c,'#4a3e48');
+  return{img:oc,ox:cx+1,base:cyB+1,rxW:rx/k,spout:{x:cx+1,y:cyC-cth-ryC+1},bowl:{x:cx+1,y:cyT+1,rx:rx-3,ry:Math.max(.6,ryT-.6)},cup:{x:cx+1,y:cyC-cth+1,rx:crx}}}
 function paintLamp(ph){const h=Math.round(ph*2.1);const[c,g]=mk(Math.round(ph*.8)+2,h+4);const x=Math.round(ph*.4),b=h+2;R(g,x,b-h,2,h,'#2b2a3d');R(g,x,b-h,1,h,'#4a4960');R(g,x-1,b-2,4,2,'#2b2a3d');const lh=Math.max(4,Math.round(ph*.3));R(g,x-lh/2+1,b-h-lh,lh,lh,'#2b2a3d');R(g,x-lh/2+2,b-h-lh+1,lh-2,lh-2,'#ffd38a');hline(g,x-lh/2,b-h-lh-1,lh+2,'#2b2a3d');P(g,x+1,b-h-lh-2,'#2b2a3d');return{img:c,ox:x+1,base:b,light:{x:x+1,y:b-h-lh/2}}}
 function paintStall(ph,col,goods){const w=Math.round(ph*2.1),h=Math.round(ph*1.5);const[c,g]=mk(w+4,h+4);const b=h+2;
   R(g,2,b-h,1,h,'#5e3832');R(g,w+1,b-h,1,h,'#5e3832');awning(g,0,b-h,w+4,col,ph);
@@ -1508,7 +1520,7 @@ function paintBarrel(ph){const w=Math.round(ph*.62),h=Math.round(ph*.85);const[c
   return{img:c,base:b}}
 
 // ── montaje de la escena ──
-function pzLayout(){const o=V.o;PZ.CX=W/2;PZ.HY=o.y+V.hz;PZ.HE=V.cy-PZ.HY+14;PZ.EZ=Math.round(2.4*W);PZ.XS=Math.round(o.w/2*.7/KF);PZ.MG=W/2+330;PZ.pw=520;PZ.ez=PZ.EZ;
+function pzLayout(){const o=V.o;PZ.CX=W/2;PZ.HY=o.y+V.hz;PZ.HE=V.cy-PZ.HY+14;PZ.EZ=Math.round(2.4*W);PZ.XS=Math.round(o.w/2*.7/KF);PZ.MG=W/2+520;PZ.pw=520;PZ.ez=PZ.EZ;
   PZ.DF=dOf(KF);PZ.d1=dOf(K1);PZ.dE=dOf(KE);PZ.dA0=dOf(KA+KAW);PZ.dA1=dOf(KA-KAW);PZ.dT=dOf(KT);PZ.dC=dOf(KC);
   PZ.lanes=[{k:.4,m:110},{k:KA,m:0},{k:.172,m:0}].map(l=>Object.assign(l,{d:dOf(l.k),y:Math.round(gyOf(l.k)),h:Math.round(phOf(l.k))}));
   PZ.lanes[0].x0=o.x-l0m(PZ.lanes[0]);PZ.lanes[0].x1=o.x+o.w+12+PZ.lanes[0].m;
@@ -1546,7 +1558,7 @@ function pzBuild(){const it=[];const CX=PZ.CX;PZ.items=it;PZ.lights=[];
   PZ.walls=[];for(const sd of[-1,1]){const sD=paintStrip(sd>0?901:707,false),sN=paintStrip(sd>0?901:707,true);const wd=mapWall(sD,sd),wn=mapWall(sN,sd);PZ.walls.push({day:wd,night:wn});
     const ctx=wd.img.getContext('2d'),dat=ctx.getImageData(0,0,wd.w,wd.h).data;for(let i=0;i<wd.w;i++){let any=false;for(let j=0;j<wd.h;j+=2)if(dat[(j*wd.w+i)*4+3]){any=true;break}if(any)it.push({d:wd.depth[i],col:i,wall:PZ.walls.length-1})}}
   // la fuente
-  const kf=kOf(PZ.fount.z),fp=phOf(kf);PZ.fnt=paintFountain(fp*1.15);it.push(bb(PZ.fount.z,PZ.fnt.img,Math.round(CX+PZ.fount.x*kf-PZ.fnt.ox),Math.round(gyOf(kf))-PZ.fnt.base,{fountain:1}));
+  const kf=kOf(PZ.fount.z),fp=phOf(kf);PZ.fnt=paintFountain(fp*1.15,kf);PZ.fount.R=PZ.fnt.rxW+70;PZ.shadows[0]={x:PZ.fount.x+PZ.fnt.rxW*.45,z:PZ.fount.z+PZ.fnt.rxW*.35,rx:PZ.fnt.rxW*1.1,rz:PZ.fnt.rxW*.6};it.push(bb(PZ.fount.z,PZ.fnt.img,Math.round(CX+PZ.fount.x*kf-PZ.fnt.ox),Math.round(gyOf(kf))-PZ.fnt.base,{fountain:1}));
   // farolas a los dos lados
   for(const[k,sd]of[[.19,1],[.215,-1],[.25,1],[.29,-1],[.34,1],[.33,-1]]){const lp=paintLamp(phOf(k));const X=sd*(PZ.XS-50);const o={lamp:lp.light};it.push(bb(dOf(k),lp.img,Math.round(CX+X*k-lp.ox),Math.round(gyOf(k))-lp.base,o))}
   // puestos del mercado
@@ -1635,10 +1647,10 @@ function towerStamp(){PZ.stampT=1;later(.3,()=>{if(st()===0){AU.tone(70,.25,'sin
 function P2(g,x,y,c){g.fillStyle=c;g.fillRect(Math.round(x),Math.round(y),1,1)}
 function makeDeck(){const w=260,h=70;const[c,g]=mk(w,h);const tones=['#5e6378','#737a90','#8a90a6','#a3a9bd'];for(let x=0;x<w;x++){const b=Math.round(34+Math.sin(x/w*TAU*3)*6+Math.sin(x/w*TAU*7+1)*4+Math.sin(x/w*TAU*13)*2);for(let y=0;y<b;y++){const v=2.2-(y/b)*1.6+(y>b-4?-.6:0)+(hx2(x>>2,y>>2)-.5)*.5;P(g,x,y,tones[clamp(qd(v,x,y),0,3)])}}return c}
 function pzDraw(g,it,night,t){
-  if(it.ground){const G=PZ.ground;if(PZ.still){g.setTransform(1,0,0,1,0,0);g.drawImage(G.img,G.x,G.y);return}g.setTransform(1,0,0,1,0,0);
-    let prev=null;for(let j=G.h-1;j>=0;j--){const y=G.y+j,k=(y+.5-PZ.HY)/PZ.HE,P=pzP(dOf(k)),y0=y*P.s+P.ty,y1=prev===null?y0+P.s:prev;prev=y0;g.drawImage(G.img,0,j,G.w,1,G.x*P.s+P.tx,y0,G.w*P.s,Math.max(1,y1-y0+.4))}return}
+  if(it.ground){const G=PZ.ground;if(PZ.still){g.setTransform(1,0,0,1,0,0);g.drawImage(G.img,G.x,G.y);return}g.setTransform(1,0,0,1,0,0);g.imageSmoothingEnabled=true;
+    let prev=null;for(let j=G.h-1;j>=0;j--){const y=G.y+j,k=(y+.5-PZ.HY)/PZ.HE,P=pzP(dOf(k)),y0=y*P.s+P.ty,y1=prev===null?y0+P.s:prev;prev=y0;g.drawImage(G.img,0,j,G.w,1,G.x*P.s+P.tx,y0,G.w*P.s,Math.max(1,y1-y0+.4))}g.imageSmoothingEnabled=false;return}
   if(it.col!==undefined){const Wd=PZ.walls[it.wall],A=night>.5?Wd.night:Wd.day,i=it.col;const P=pzP(it.d);if(PZ.still){g.setTransform(1,0,0,1,0,0);g.drawImage(A.img,i,0,1,A.h,A.x+i,A.y,1,A.h);return}
-    const dn=A.depth[Math.min(A.w-1,i+1)],P2b=pzP(dn),xa=(A.x+i)*P.s+P.tx,xb=(A.x+i+1)*P2b.s+P2b.tx;g.setTransform(1,0,0,1,0,0);g.drawImage(A.img,i,0,1,A.h,Math.min(xa,xb),A.y*P.s+P.ty,Math.abs(xb-xa)+.4,A.h*P.s);return}
+    const dn=A.depth[Math.min(A.w-1,i+1)],P2b=pzP(dn),xa=(A.x+i)*P.s+P.tx,xb=(A.x+i+1)*P2b.s+P2b.tx;g.setTransform(1,0,0,1,0,0);g.imageSmoothingEnabled=true;g.drawImage(A.img,i,0,1,A.h,Math.min(xa,xb),A.y*P.s+P.ty,Math.abs(xb-xa)+.4,A.h*P.s);g.imageSmoothingEnabled=false;return}
   const P=pzP(it.d);pzSet(g,P);
   if(it.img){const img=it.night&&night>.5?it.night:it.img;const sc=it.sc||1;let x=it.x;
     if(it.sway){const a=Math.sin(t*1.7+it.d*.01)*WX.c.wind*it.sway;x+=a}
@@ -1661,10 +1673,12 @@ function pzDraw(g,it,night,t){
 }
 function drawTowerLive(g,it,t){const T=PZ.towerD,x=it.x,y=it.y,ck=T.clock;const hr=(8+S.dayT*12)/12*TAU,mn=((8+S.dayT*12)%1)*TAU;for(let i=0;i<ck.r*.85;i++)P2(g,x+ck.x+Math.sin(mn)*i,y+ck.y-Math.cos(mn)*i,'#3a2418');for(let i=0;i<ck.r*.55;i++)P2(g,x+ck.x+Math.sin(hr)*i,y+ck.y-Math.cos(hr)*i,'#8a1f34');
   const st=PZ.stampT||0;const lift=st>0?(st>.3?easeOut(1-(st-.3)/.7):easeIn(st/.3)):0;drawStamp(g,x+T.stamp.x,y+T.stamp.y,phOf(KT),lift)}
-function drawFountainLive(g,it,t){const F=PZ.fnt,x=it.x,y=it.y,sp=F.spout,bw=F.bowl,cp=F.cup;
-  for(let a=0;a<TAU;a+=TAU/14){const k=(t*1.2+a)%1;P2(g,x+sp.x+Math.cos(a)*(cp.rx+k*2),y+sp.y+1+k*(bw.y-sp.y-1),k<.5?'#e8f6ff':'#9ad0f0')}
-  for(let i=0;i<3;i++){const k=((t*.6+i/3)%1);for(let a=0;a<TAU;a+=.4)P2(g,x+bw.x+Math.cos(a)*(2+k*bw.rx),y+bw.y+Math.sin(a)*(.5+k*bw.ry),k<.6?'#9ad0f0':'#6fb0dc')}
-  for(let i=0;i<6;i++)P2(g,x+bw.x-bw.rx+((i*11+(t*10|0))%(bw.rx*2)),y+bw.y+(i%3)-1,'#e8f6ff')}
+function drawFountainLive(g,it,t){const F=PZ.fnt,x=it.x,y=it.y,bw=F.bowl,cp=F.cup;
+  // cuatro chorros finos que caen en arco de la taza al pilón, con gotas que bajan
+  for(const sd of[-1,-.45,.45,1]){const x0=x+cp.x+sd*cp.rx,y0=y+cp.y+1,x1=x+bw.x+sd*(cp.rx+(bw.rx-cp.rx)*.35),y1=y+bw.y;
+    for(let q=0;q<=10;q++){const k=q/10,px=lerp(x0,x1,k)+sd*Math.sin(k*Math.PI)*2,py=y0+(y1-y0)*k*k;const on=((q+(t*14|0))%4)===0;P2(g,px,py,on?'#e8f6ff':(q%2?'#7fbde6':'#9ad0f0'))}
+    if(((t*8+sd*3)|0)%2)P2(g,x1+sd,y1-1,'#e8f6ff')}
+  const k=(t*.6)%1;for(let a=0;a<TAU;a+=.25)P2(g,x+bw.x+Math.cos(a)*(cp.rx+3+k*(bw.rx-cp.rx-3)),y+bw.y+Math.sin(a)*bw.ry,'#cfeaff')}
 function drawCat(g,it,t){const x=it.x+Math.round(it.img.width*.62),y=it.y+it.img.height-Math.round(it.img.height*.62);const br=Math.sin(t*2)>.3?1:0;E(g,x,y,5,2.6+br*.3,'#e8822a');E(g,x-1,y-1,4,1.8,'#ffb060');E(g,x+5,y-1,2.2,2,'#e8822a');P2(g,x+6,y-3,'#e8822a');P2(g,x+4,y-3,'#e8822a');R(g,x-3,y,3,1,'#c8642a');P2(g,x+5,y-1,'#3a2418');const tl=Math.sin(t*1.1)>.85?1:0;P2(g,x-6,y+1-tl,'#e8822a');P2(g,x-7,y+1-tl*2,'#e8822a')}
 
 function lglow(g,x,y,r,col,a){if(a<=0)return;g.save();g.globalCompositeOperation='lighter';g.globalAlpha=Math.min(1,a);g.imageSmoothingEnabled=true;g.drawImage(glowSpr(col),x-r,y-r,r*2,r*2);g.restore()}
@@ -2085,7 +2099,7 @@ $('#bCodex').onclick=()=>showCodex();
 $('#waitBadge').onclick=()=>navTo(0);
 $('#vitChip').onclick=()=>navTo(0);
 $('#vitHint').onclick=()=>{if($('#vitHint').classList.contains('go'))navTo(1)};
-$('#bCam').onclick=()=>{AU.init();camMode=CAMS[(CAMS.indexOf(camMode)+1)%CAMS.length];try{localStorage.setItem('vialix-cam2',camMode)}catch(_){}toast('Cámara: '+CAMN[camMode]+'. Desliza para probarla.');const cur=st();navTo(mod4(cur+1));later(1.6,()=>navTo(cur))};
+$('#bCam').onclick=()=>{AU.init();camMode=CAMS[(CAMS.indexOf(camMode)+1)%CAMS.length];try{localStorage.setItem('vialix-cam3',camMode)}catch(_){}toast('Cámara: '+CAMN[camMode]+'. Desliza para probarla.');const cur=st();navTo(mod4(cur+1));later(1.6,()=>navTo(cur))};
 $('#bSound').onclick=()=>{AU.init();AU.on=!AU.on;$('#iSound').src=AU.on?ICON.snd:ICON.mute;AU.setAmb(AU.on?ambFor(st()):'');try{localStorage.setItem('vialix-sound',AU.on?'1':'0')}catch(_){}};
 addEventListener('keydown',e=>{if(e.key==='ArrowRight')navTo(mod4(st()+1));if(e.key==='ArrowLeft')navTo(mod4(st()-1))});
 $('#bStart').onclick=()=>{AU.init();AU.setAmb('plaza');$('#ovTitle').hidden=true;S.started=true;S.edictNew=true;showEdict(true)};
@@ -2120,7 +2134,7 @@ function loop(now){let dt=Math.min(.05,(now-last)/1000);last=now;if(hitstop>0){h
 function boot(){
   makeIcons();makeCritters();makeIngSprites();
   S.gens={};S.carryNext=[];
-  S.ambient=[{spec:{skin:'#e0a57a',hair:'#3a2418',cloth:'#4f8a4a',hat:'pointy',hatc:'#3f5a7a'},mods:{float:1}},{spec:{skin:'#f2c9a0',hair:'#c99a2e',cloth:'#b5463f',hat:'none',dress:1},mods:{duck:1}},{spec:{skin:'#b9784f',hair:'#1c1b29',cloth:'#c48a3a',hat:'cap'},mods:{scale:.5}},{spec:{skin:'#f0d0b8',hair:'#7a4a2a',cloth:'#3f6fb5',hat:'none'},mods:{tint:'#a3a1b5'}},{spec:{skin:'#e0a57a',hair:'#9a92b5',cloth:'#8a5bb5',hat:'hood'},mods:{hearts:1}}];
+  S.ambient=[{spec:{skin:'#e0a57a',hair:'#3a2418',cloth:'#4f8a4a',hat:'pointy',hatc:'#3f5a7a'},mods:{float:1}},{spec:{skin:'#f2c9a0',hair:'#c99a2e',cloth:'#b5463f',hat:'none',dress:1},mods:{duck:1}},{spec:{skin:'#b9784f',hair:'#1c1b29',cloth:'#c48a3a',hat:'cap'},mods:{scale:.45,spark:'#c9b6ff',qm:1}},{spec:{skin:'#f0d0b8',hair:'#7a4a2a',cloth:'#3f6fb5',hat:'none'},mods:{tint:'#a3a1b5'}},{spec:{skin:'#e0a57a',hair:'#9a92b5',cloth:'#8a5bb5',hat:'hood'},mods:{hearts:1}}];
   $('#iCoin').src=ICON.coin;$('#iCam').src=ICON.cam;$('#iSun').src=ICON.sun;$('#iBell').src=ICON.bell;$('#iBook').src=ICON.book;
   try{AU.on=localStorage.getItem('vialix-sound')!=='0'}catch(_){}
   $('#iSound').src=AU.on?ICON.snd:ICON.mute;
