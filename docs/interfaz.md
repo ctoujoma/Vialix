@@ -87,6 +87,7 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 - **Espíritus de esencia:** salen del caldero y vuelan a su probeta, que se llena. Las opuestas se anulan con chispas y siseo.
 - **Modo del caldero:** Hervir (llamas bajo el caldero), Congelar (escarcha y vapor frío), Macerar (un haz de luna entra por la ventana).
 - **Predicción:** «→ ??? · Normal» hasta descubrir el efecto; después, el nombre y el secundario. En Desmedido, el aviso tiembla y el caldero también.
+- **Cada pared es un nicho en 3D:** el taller, el almacén y la puerta tienen pared del fondo, suelo de tablones en perspectiva, techo con vigas y paredes laterales con su pilar de madera. Los muebles y personajes están a su distancia (el caldero y Gus delante, las probetas en la pared), así que al girar se nota la profundidad.
 - **El caldero se ve desde arriba:** boca ancha y la superficie de la poción como un shader de píxeles (remolinos que siguen al cucharón, brillo de la ventana, ondas de cada ingrediente, escarcha al congelar, estrellas al macerar, pulso rojo si va a explotar).
 - **Remover:** se dibujan círculos con el dedo dentro del caldero. A buen ritmo aparece un anillo de runas y sube la calidad (★ a ★★★). Demasiado rápido, salpica.
 - **Embotellar:** el líquido baja, el frasco sube con una columna de luz del color de su calidad y estalla en chispas.
