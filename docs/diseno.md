@@ -263,8 +263,12 @@ Todo el texto se genera con plantillas e idiomas intercambiables: nada de texto 
 
 ## 10. Para el juego completo (apuntado tras probar los mockups)
 
-- **Tutorial y guía inicial.** El primer día empieza con la tienda cerrada: una carta de la antigua dueña (o Gus, a regañadientes) enseña a echar ingredientes, cocer, remover, embotellar y servir. Se descubren los primeros efectos con una receta guiada.
-- **Preapertura.** Antes de abrir al público por primera vez hay un tiempo para hacer stock con calma, sin clientes, y llenar la vitrina.
+- **Tutorial y preapertura** (ya en el mockup v0.8):
+  - El primer día empieza con la persiana a medio bajar y un cartel de «Cerrado». En el mostrador hay una carta de Remedios, la antigua dueña.
+  - Gus guía paso a paso desde un panel arriba e ilumina lo que hay que tocar. Primero, Valor (Guindilla + Hervir + remover + embotellar + guardar). Después, Silencio (Susurro + Congelar), que se prueba en Gus para descubrir qué hace. La tercera poción es libre.
+  - No se puede abrir hasta tener 3 pociones en la vitrina, también si te saltas las explicaciones («Ya conozco el oficio»).
+  - Al subir la persiana llegan el edicto, la cola (entra andando) y el primer cliente. Un aviso explica Apuntar y Rechazar.
+  - Si te adelantas, el tutorial te sigue. Si el caldero explota, vuelve al paso de la guindilla.
 - **Ampliar la vitrina.** 6 huecos al principio; mejoras de la tienda para pasar a 9, 12… y el **almacén** (la pared de atrás) como depósito de pociones y de ingredientes.
 - **Mejoras del alambique** (más usos al día) y de otras herramientas.
 
