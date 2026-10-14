@@ -290,7 +290,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <h1 id="logo">Vialix</h1>
     <div class="tag">Botica de la plaza. Atiende la ventanilla, <em>interpreta</em> lo que piden y experimenta en el caldero.</div>
     <button class="btn gold big glowy" id="bStart">Abrir la botica</button>
-    <div class="ver">Mockup jugable · v0.7 · Desliza o usa las pestañas para girar la cámara</div>
+    <div class="ver">Mockup jugable · v0.7.1 · Desliza o usa las pestañas para girar la cámara</div>
   </div>
   <div id="ovEdict" class="ov" hidden></div>
   <div id="ovCard" class="ov" hidden></div>
@@ -1187,6 +1187,8 @@ const V={buf:null,g:null,parts:[],walkers:[],queueFig:[],pigeons:[],clouds:[],cl
     this.hz=Math.round(this.o.h*.56);
     this.shelfY=this.cy+50;
     this.buildStatic();pzLayout();
+    // si cambia el tamaño de la pantalla, la gente de la calle se recoloca con las medidas nuevas
+    if(this.walkers.length||this.queueFig.length){this.walkers=[];for(let i=0;i<5;i++){this.spawnWalker();const w=this.walkers[this.walkers.length-1];w.x=this.o.x+rnd(this.o.w)}this.setQueue();this.pigeons=[]}
     if(!this.clouds.length)for(let i=0;i<8;i++)this.clouds.push({x:rnd(-380,W+320),y:rnd(4,46),i:i%4,v:rnd(1.5,3.5)});
     this.pigeons=[];for(let i=0;i<4;i++)this.pigeons.push(newPigeon({t:rnd(5)}));
   },
