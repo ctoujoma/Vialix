@@ -90,9 +90,12 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
   - **Troceado:** tres toques con el cuchillo.
   - **Molido:** frotar en círculos en el mortero.
   - **Tostado:** mantener pulsado sobre el fuego y soltar en la franja verde; si te pasas, se quema y la poción sale peor.
-- **Reloj de arena** (botón a la izquierda del caldero): cada vuelta dura 5 segundos.
+- **Fuego y reloj de arena** (botón a la izquierda del caldero, y el reloj dibujado sobre el hogar). Como en *Kingdom Come*, la gracia está en el momento justo:
+  - «Al fuego» empieza a hervir y la arena corre. Cada 5 segundos se acaba, el reloj se gira solo y cuenta una vuelta.
   - Al acabar cada vuelta, lo entero y lo tostado sueltan un punto de cada esencia, y lo troceado suelta lo que le quedaba.
-  - Cuando ya no queda nada por soltar, cada vuelta concentra la mezcla (+1 a todo) hasta el ¡bum!
+  - Cuando ya no queda nada por soltar, cada vuelta de más concentra la mezcla (+1 a todo) hasta el ¡bum!
+  - «Retirar» lo saca del fuego. Si lo retiras justo cuando se acaba la arena, el botón dice «¡Justo!». Si lo retiras a media vuelta («A medias»), la poción pierde una estrella y no cuenta como receta seguida al pie de la letra.
+- **Animaciones:** chorro de la jarra al verter la base. El ingrediente vuela al caldero según su estado: en pedazos, como polvo de su color o tostado con humo (negro si se quemó). Al caer, el molido levanta una nube y el troceado salpica en varios sitios.
 - **Lectura a ojo:** el color del líquido es la esencia dominante, su viveza es la intensidad, y el color del vapor es la segunda esencia. Gus comenta a qué huele al acabar cada vuelta. Si el efecto ya se conoce, el panel dice «huele a Valor».
 - **Aerómetro:** tapado con un paño. Al comprarlo (en el mockup, gratis) se destapan las probetas con cifras y la predicción completa.
 - **Remover:** igual que antes, sube la calidad. Quemar un ingrediente la baja, y seguir una receta al pie de la letra la sube.
@@ -133,7 +136,9 @@ Portada → [5:00 Gaceta → Edicto] → Taller ⇄ Mercado (lun-sáb; la tienda
                    Cierre: libro de cuentas → «Dormir» → 5:00
 ```
 
-- **Reloj visual** siempre a la vista (por diseñar: en el HUD, en la torre de la plaza o ambos).
+- **Reloj visual:** en el HUD («Lunes · 8:07») y en la torre de la plaza, que marca la hora y estampa su sello cada hora. Se para mientras lees un papel (edicto, Gaceta, libro, cuentas).
+- **Paciencia:** la gente de la cola se cansa a las dos horas y media de juego, y se va. En la ventanilla, una barra sobre el mostrador se vacía de verde a rojo (hora y media; una hora si es urgente). Si llega a cero, el cliente se va y deja una reseña de 1★ en la Gaceta.
+- **Abierta y sin cliente:** el botón llama al siguiente («Llamar al siguiente · 2 en la cola») o, si no hay nadie, permite cerrar antes. A las 20:00 el Gremio manda cerrar; si hay un cliente, se cierra en cuanto se va.
 - **Aviso de cola** antes de abrir: cuánta gente espera fuera.
 - **Domingo:** sin abrir y sin mercado; solo taller. La partida empieza en domingo.
 
