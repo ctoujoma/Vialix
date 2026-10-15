@@ -65,37 +65,42 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 - **Sellos de caucho:** Rechazar, Apuntar y Servir. Al pulsar, el sello golpea con salpicadura de tinta y sonido. Servir se ilumina cuando hay una poción elegida.
 - **Penumbra interior** con la luz del farol, y un haz de sol que entra por la ventanilla con motas de polvo.
 
-### 2.3 Taller
-
-> Describe el taller del mockup v0.8. Con la alquimia decidida en octubre de 2026 ([decisiones.md](decisiones.md)) cambiará: bases líquidas en lugar de Hervir, Congelar y Macerar; mortero, cuchillo y fuego para tratar ingredientes; reloj de arena para el hervor; lectura a ojo (las probetas pasan a ser el aerómetro, que se compra); y varios frascos por preparación.
+### 2.3 Taller (mockup v0.10)
 
 ```
 ┌──────────────────────────────────┐
 │ HUD    🔔 Sra. Pellejo espera…   │ aviso si hay alguien en la ventanilla
-│ ◯ ventana    [licencia]    🕯 🫙  │
-│ 🫙🕯       5    1                │ cifras sobre las probetas
-│        ║ ║ ║ ║ ║                 │ 5 probetas
-│        🔥 💧 🌿 🌬 🌀              │
-│   [→ Silencio · Normal · + hipo] │ predicción
+│ ◯ ventana    [licencia]  Vitrina │
+│        ┌ paño ─────────┐         │ aerómetro tapado hasta comprarlo
+│        │ [Aerómetro ·  │         │ (con él: 5 probetas con cifras)
+│        │   comprar]    │         │
+│   [Rojo intenso · vapor magenta] │ lectura a ojo (o predicción con aerómetro)
+│ [⌛ 2 vueltas]                   │ reloj de arena
 │          ╭──────────╮       🧌   │ caldero · Gus en su taburete
 │   ⚗️     ╰──────────╯       🛢   │ alambique · barril
-│              🔥🔥                │ hogar (fuego, escarcha o luna)
-│ [📖] [Hervir][Congelar][Macerar] [Embotellar]
+│              🔥🔥                │ fuego (más vivo mientras hierve)
+│ [📖] [Agua][Aguardiente][Vino] [Embotellar]
 │ ◂ tarros del estante ▸           │
 │  Ventanilla    Taller   Mercado  │
 └──────────────────────────────────┘
 ```
-- **Contador de la vitrina** arriba a la derecha («Vitrina 1/6 · servir ▶»), que lleva a la ventanilla.
-- **Estante de ingredientes** abajo: se toca un tarro y salta al caldero en parábola, con salpicadura y ondas. Los desconocidos muestran «? ? ?» hasta la primera vez.
-- **Espíritus de esencia:** salen del caldero y vuelan a su probeta, que se llena. Las opuestas se anulan con chispas y siseo.
-- **Modo del caldero:** Hervir (llamas bajo el caldero), Congelar (escarcha y vapor frío), Macerar (un haz de luna entra por la ventana).
-- **Predicción:** «→ ??? · Normal» hasta descubrir el efecto; después, el nombre y el secundario. En Desmedido, el aviso tiembla y el caldero también.
-- **Cada pared es un nicho en 3D:** el taller, el almacén y la puerta tienen pared del fondo, suelo de tablones en perspectiva, techo con vigas y paredes laterales con su pilar de madera. Los muebles y personajes están a su distancia (el caldero y Gus delante, las probetas en la pared), así que al girar se nota la profundidad.
-- **El caldero se ve desde arriba:** boca ancha y la superficie de la poción como un shader de píxeles (remolinos que siguen al cucharón, brillo de la ventana, ondas de cada ingrediente, escarcha al congelar, estrellas al macerar, pulso rojo si va a explotar).
-- **Remover:** se dibujan círculos con el dedo dentro del caldero. A buen ritmo aparece un anillo de runas y sube la calidad (★ a ★★★). Demasiado rápido, salpica.
-- **Embotellar:** el líquido baja, el frasco sube con una columna de luz del color de su calidad y estalla en chispas.
-- **Gus** reacciona al tocarlo, prueba pociones (3 al día) y se transforma: se calla, flota, se vuelve pato…
-- **¡BUM!** Con 10 o más puntos en una esencia: el caldero tiembla, explota (destello, sacudida, parón de un instante, escombros) y el hollín cubre la pantalla hasta que lo limpias con el dedo. Gus se queda tiznado el resto del día.
+- **Base primero:** Agua (potencia), Aguardiente (suprime) o Vino (transforma). Se vierte al caldero y lo tiñe. No se cambia con ingredientes dentro: se vacía al embotellar o al explotar.
+- **Tratamientos:** al tocar un tarro aparece «¿cómo lo echas?» con cuatro opciones.
+  - **Entero:** va directo al caldero.
+  - **Troceado:** tres toques con el cuchillo.
+  - **Molido:** frotar en círculos en el mortero.
+  - **Tostado:** mantener pulsado sobre el fuego y soltar en la franja verde; si te pasas, se quema y la poción sale peor.
+- **Reloj de arena** (botón a la izquierda del caldero): cada vuelta dura 5 segundos.
+  - Al acabar cada vuelta, lo entero y lo tostado sueltan un punto de cada esencia, y lo troceado suelta lo que le quedaba.
+  - Cuando ya no queda nada por soltar, cada vuelta concentra la mezcla (+1 a todo) hasta el ¡bum!
+- **Lectura a ojo:** el color del líquido es la esencia dominante, su viveza es la intensidad, y el color del vapor es la segunda esencia. Gus comenta a qué huele al acabar cada vuelta. Si el efecto ya se conoce, el panel dice «huele a Valor».
+- **Aerómetro:** tapado con un paño. Al comprarlo (en el mockup, gratis) se destapan las probetas con cifras y la predicción completa.
+- **Remover:** igual que antes, sube la calidad. Quemar un ingrediente la baja, y seguir una receta al pie de la letra la sube.
+- **Lote:** cada preparación da 3 frascos.
+  - La tarjeta ofrece guardarlos (los que quepan), servir uno al cliente que espera, probar uno en Gus o destilar el lote entero.
+  - Si Gus prueba algo útil hecho sin receta, se apunta en tu recetario.
+- **Recetario** en el libro (códice): las recetas de Remedios (una con una mancha de tinta) y las tuyas.
+- **Igual que antes:** la vista desde arriba del caldero con su shader, la explosión con hollín, Gus y el nicho en 3D.
 
 ## 3. Pantallas y paneles
 

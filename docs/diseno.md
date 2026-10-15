@@ -102,7 +102,7 @@ La gramática de una poción:
 
 > **QUÉ afecta** (esencia dominante) × **CÓMO** (base líquida) × **CUÁNTO** (tiempo de hervor) + **efecto secundario** (segunda esencia)
 
-> **Cambio de octubre de 2026** ([decisiones.md](decisiones.md)): la alquimia pasa a ser física, inspirada en *Kingdom Come: Deliverance II*. Las bases líquidas sustituyen a los modos, cada ingrediente tiene tratamientos, la fuerza la da el reloj de arena, se lee a ojo y cada preparación da varios frascos. Las secciones 4.2, 4.3, 4.6 y 4.7 ya lo reflejan; el mockup v0.8 todavía usa el sistema anterior.
+> **Cambio de octubre de 2026** ([decisiones.md](decisiones.md)): la alquimia pasa a ser física, inspirada en *Kingdom Come: Deliverance II*. Las bases líquidas sustituyen a los modos, cada ingrediente tiene tratamientos, la fuerza la da el reloj de arena, se lee a ojo y cada preparación da varios frascos. Las secciones 4.2, 4.3, 4.6 y 4.7 ya lo reflejan, y el mockup v0.10 lo implementa. Como aún no hay mercado, el aerómetro se «compra» gratis desde el taller.
 
 ### 4.1 Esencias
 
