@@ -2,14 +2,20 @@
 
 > Borrador. Se cerrará con los mockups.
 
-## Estilo: «HD pixel art»
+## Estilo: LucasArts pintado
 
-Sprites de baja resolución nítidos, con iluminación, brillos y partículas modernas por encima. Referencias: *Moonlighter*, *Eastward*, *Blasphemous*, *Hyper Light Drifter*.
+> Decidido en octubre de 2026 ([decisiones.md](decisiones.md)). Sustituye a la dirección «HD pixel art» del principio, que en el mockup quedaba demasiado estruendosa: todo con el mismo contraste y la misma saturación.
 
-- **Pixel art a 180 px de ancho**, escalado a múltiplos enteros. Contornos oscuros selectivos, sombras en bloques, 3–4 tonos por material.
-- **Por encima, a resolución de pantalla:** brillo (*bloom*), halos de luz, partículas suaves y destellos. Los sprites siguen siendo píxel a píxel; la luz no.
-- **Paleta propia,** distinta de la de AdventurersGuild: fondos de madera y piedra cálidos y oscuros, para que destaquen los colores de joya de las pociones. Punto de partida: *Resurrect 64* (Lospec), ajustada.
+Referencia principal: *The Secret of Monkey Island* y *Monkey Island 2: LeChuck's Revenge* (y *Indiana Jones and the Fate of Atlantis*). Fondos pintados reducidos a una paleta corta, con tramado; personajes limpios que resaltan sobre ellos.
+
+- **Una gama por escena.** Unos 32 a 48 colores, de la misma familia, con las sombras hacia el violeta y las luces hacia el ocre. Cada estación (ventanilla, taller, almacén, puerta) tiene su color dominante, y la hora del día lo desplaza.
+- **Jerarquía de valores.** El fondo (la calle, las paredes) va suave, lejano y con poco contraste; los personajes y lo que se puede tocar llevan más contraste. Nada compite con el cliente.
+- **Tramado en los degradados** (cielo, luz del farol, niebla) en vez de transiciones suaves.
+- **Luz cálida en pocas ventanas**, no en todas.
+- **Arquitectura ligeramente torcida**, sutil: fachadas que se inclinan un poco y tejados algo combados. No es el foco.
+- **Pixel art a unos 180 px de ancho**, escalado a múltiplos enteros, como hasta ahora.
 - **Colores de las esencias** reservados: ningún fondo usa sus tonos más saturados, para que una poción siempre se lea.
+- **Pendiente de valorar más adelante:** reducir partículas y brillos, diálogo como texto de color sobre el personaje, interfaz de madera apagada y una sola fuente pixel. De momento la interfaz no cambia.
 
 ## Producción: el arte vive en el código
 

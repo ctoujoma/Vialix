@@ -51,3 +51,20 @@ src/
 | **4. Contenido y espectáculo** | Mercado, facciones, más clientes y arcos, mejoras, pulido de efectos y sonido | GitHub Pages |
 | **5. Android** | Capacitor, rendimiento, vibración, guardado nativo, Play Store | APK |
 | **6. Ambulante** | Mapa, pueblos y esencias nuevas | |
+
+## 4. Plan de implementación (octubre de 2026)
+
+Tras las [decisiones de octubre](decisiones.md), la fase 1 (mockups) sigue con estos pasos antes de pasar a los cimientos. Cada paso es una versión del mockup que se prueba en el artefacto antes de seguir.
+
+| Versión | Qué | Por qué en este orden |
+| --- | --- | --- |
+| **v0.9 · Prueba de estilo** | La ventanilla repintada al estilo LucasArts: una gama por escena, calle suave con tramado, personajes con contraste, torcido sutil. Con un interruptor para comparar con el estilo actual. La interfaz no cambia | La dirección de arte afecta a todo lo demás; mejor validarla en una pantalla antes de repintar el resto |
+| **v0.10 · Alquimia nueva** | Taller con bases líquidas, tratamientos (entero, troceado, molido, tostado), reloj de arena, lectura a ojo con aerómetro, recetario (recetas compradas y descubiertas) y lotes de 3 o 4 frascos | Es el corazón del juego, y su duración real (30 a 60 s por preparación) decide el ajuste del reloj |
+| **v0.11 · El ritmo del día** | Reloj visual, madrugada lenta, abrir cuando quieras, cola desde las 8:00 con aviso, paciencia de los clientes, urgentes sin Apuntar, cierre al atardecer y domingo cerrado | Con la alquimia ya jugable se pueden ajustar las velocidades del reloj y la paciencia |
+| **v0.12 · Mercado y economía** | Ingredientes con precio y existencias, salir al mercado cierra la tienda, el librero de recetas y el aerómetro a la venta | Da sentido al stock y a las recetas compradas |
+| **v0.13 · Tutorial del domingo** | La partida empieza en domingo: carta de Remedios y Gus enseñando la alquimia nueva; el lunes se abre | Va al final porque enseña todo lo anterior |
+| **v0.14 · Repintar el resto** | Taller, almacén, puerta y gente de la calle con el estilo validado en la v0.9 | Solo cuando el estilo esté aprobado |
+
+Después, la **fase 2 (cimientos)**: Vite + TypeScript, núcleo sin DOM con tests, guardado y despliegue en GitHub Pages, portando lo validado en el mockup.
+
+Queda para más adelante, fuera de estos pasos: el personal (Gus como entretenedor, segundo ayudante y becarios), los retoques de interfaz pendientes de valorar (ver [arte.md](arte.md)) y las mejoras de la tienda.

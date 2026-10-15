@@ -66,6 +66,9 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 - **Penumbra interior** con la luz del farol, y un haz de sol que entra por la ventanilla con motas de polvo.
 
 ### 2.3 Taller
+
+> Describe el taller del mockup v0.8. Con la alquimia decidida en octubre de 2026 ([decisiones.md](decisiones.md)) cambiará: bases líquidas en lugar de Hervir, Congelar y Macerar; mortero, cuchillo y fuego para tratar ingredientes; reloj de arena para el hervor; lectura a ojo (las probetas pasan a ser el aerómetro, que se compra); y varios frascos por preparación.
+
 ```
 ┌──────────────────────────────────┐
 │ HUD    🔔 Sra. Pellejo espera…   │ aviso si hay alguien en la ventanilla
@@ -114,16 +117,20 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 ## 4. Flujo de un día
 
 ```
-Portada → [Amanecer: Gaceta → Edicto] → Taller ⇄ Mercado
-                                            │
-                                     «Abrir ventanilla»
-                                            ▼
-                                   Ventanilla (cliente a cliente)
-                                            │
-                                     «Cerrar la tienda»
-                                            ▼
-                         Cierre: libro de cuentas → «Dormir» → Amanecer
+Portada → [5:00 Gaceta → Edicto] → Taller ⇄ Mercado (lun-sáb; la tienda queda cerrada)
+                                      │   reloj lento · desde las 8:00, aviso de cola
+                               «Abrir», cuando quieras
+                                      ▼
+                         Ventanilla ⇄ Taller (reloj de juego; los clientes esperan)
+                                      │
+                               20:00, atardecer
+                                      ▼
+                   Cierre: libro de cuentas → «Dormir» → 5:00
 ```
+
+- **Reloj visual** siempre a la vista (por diseñar: en el HUD, en la torre de la plaza o ambos).
+- **Aviso de cola** antes de abrir: cuánta gente espera fuera.
+- **Domingo:** sin abrir y sin mercado; solo taller. La partida empieza en domingo.
 
 ## 5. Momentos de efecto visual («wow»)
 

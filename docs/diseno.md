@@ -44,27 +44,30 @@ Son tres escalas del mismo juego, no alternativas: un **encargo** pasa dentro de
 
 ### 3.1 El día (núcleo)
 
-El tiempo **no corre en tiempo real**. La unidad es el día y solo avanza cuando el jugador cierra la tienda.
+> Decidido en octubre de 2026 (ver [decisiones.md](decisiones.md)). Sustituye al día sin reloj del diseño inicial.
+
+El tiempo **corre**, a dos velocidades: despacio mientras la tienda está cerrada y a velocidad de juego cuando abres. Un reloj en pantalla lo muestra.
 
 ```
- ┌─► AMANECER ──────────────────────────────────────────────────┐
- │   · La Gaceta: consecuencias de lo que vendiste ayer         │
- │   · El Edicto del Día: normas nuevas del Gremio              │
- │   · Fermentaciones listas, encargos que vencen hoy           │
- │                                                              ▼
- │   CIERRE                                                TALLER (sin tiempo)
- │   · Libro de cuentas: ingresos, gastos, tasas           · Experimentar con calma
- │   · Reputación por facción                              · Preparar stock para hoy
- │   · Mejoras de la tienda                                · Encargos de la libreta
- │   · Dormir ─────────────────────────────────┐           · Mercado (días de mercado)
- │                                             │                │
- └─────────────────────────────────────────────┘           VENTANILLA (por turnos)
-                                                            · 5–8 clientes, uno a uno
-                                                            · Servir, apuntar o rechazar
-                                                            · Urgentes ocasionales
+ 5:00  MADRUGADA (tienda cerrada, reloj lento: ~2 min reales por hora)
+       · La Gaceta: consecuencias de lo que vendiste ayer
+       · El Edicto del Día
+       · Taller: preparar el género con calma
+       · Mercado (de lunes a sábado): ir deja la tienda cerrada
+ 8:00  Empieza a formarse cola fuera · un aviso dice cuánta gente espera
+  ?    ABRIR, cuando tú quieras (reloj de juego: ~40 s reales por hora)
+       · Ventanilla: servir, apuntar o rechazar
+       · Si piden algo que no tienes, lo preparas mientras esperan
+20:00  CIERRE al atardecer
+       · Libro de cuentas: ingresos, gastos, tasas · reputación · mejoras
+       · Dormir
 ```
 
-**Presión:** no hay cronómetro. La presión viene del alquiler semanal, las tasas del Gremio, los plazos de los encargos y la cola de clientes (se ve cuántos quedan por la ventana).
+- **Abrir tarde cuesta clientes:** la cola se impacienta y parte se va. No hay multa por abrir tarde.
+- **Domingo cerrado:** se cocina sin prisa y se revisa el stock. No hay mercado.
+- **La partida empieza en domingo**, con el tutorial, y la tienda abre por primera vez el lunes.
+
+**Presión:** el reloj, la paciencia de los clientes, el alquiler semanal, las tasas del Gremio y los plazos de los encargos.
 
 ### 3.2 El encargo
 
@@ -78,7 +81,9 @@ El tiempo **no corre en tiempo real**. La unidad es el día y solo avanza cuando
 | **Apuntar** | No hay nada adecuado: el encargo va a la **libreta** con plazo («vuelvo en 2 días») y recompensa. |
 | **Rechazar** | El cliente se va, con su frase. También tiene consecuencias (reputación, arcos). |
 
-**Urgentes (ocasionales):** *«¡Mi marido es un sapo! ¡AHORA!»*. El cliente se queda en la ventanilla mientras el jugador improvisa en el caldero, que está en la misma pantalla. No hay reloj duro: hay impaciencia creciente (frases, gestos) que baja la propina.
+**Esperar mientras preparas:** si te piden algo que no tienes, puedes decir «vuelva en un rato» y prepararlo. El cliente se impacienta a la vista (mira el reloj, golpea el cristal) y, si tardas demasiado, se va y deja una mala reseña en la Gaceta.
+
+**Urgentes (ocasionales):** *«¡Mi marido es un sapo! ¡AHORA!»*. No aceptan «vuelva mañana»: para ellos no hay Apuntar. O lo preparas mientras esperan, o se van.
 
 **Hacer stock es una apuesta:** ¿qué pedirán mañana? La Gaceta (titulares, horóscopo, clasificados), el Edicto y la estación dan pistas («Se anuncia ola de calor», «Torneo el sábado»).
 
@@ -95,7 +100,9 @@ El tiempo **no corre en tiempo real**. La unidad es el día y solo avanza cuando
 
 La gramática de una poción:
 
-> **QUÉ afecta** (esencia dominante) × **CÓMO** (modo del caldero) × **CUÁNTO** (cantidad) + **efecto secundario** (segunda esencia)
+> **QUÉ afecta** (esencia dominante) × **CÓMO** (base líquida) × **CUÁNTO** (tiempo de hervor) + **efecto secundario** (segunda esencia)
+
+> **Cambio de octubre de 2026** ([decisiones.md](decisiones.md)): la alquimia pasa a ser física, inspirada en *Kingdom Come: Deliverance II*. Las bases líquidas sustituyen a los modos, cada ingrediente tiene tratamientos, la fuerza la da el reloj de arena, se lee a ojo y cada preparación da varios frascos. Las secciones 4.2, 4.3, 4.6 y 4.7 ya lo reflejan; el mockup v0.8 todavía usa el sistema anterior.
 
 ### 4.1 Esencias
 
@@ -111,19 +118,31 @@ La gramática de una poción:
 - El **Caótico** no tiene opuesta: solo puede compensarse destilando. Siempre añade inestabilidad.
 - Cada esencia tiene color **y** símbolo, para que se lean sin depender del color.
 
-### 4.2 Modos del caldero (el verbo)
+### 4.2 Bases líquidas (el verbo)
 
-| Modo | Cómo se activa | Verbo |
+Toda poción empieza eligiendo la base que se pone a hervir. La base decide el verbo (propuesta por probar):
+
+| Base | Verbo |
+| --- | --- |
+| Agua | **Potenciar** |
+| Aguardiente | **Suprimir** |
+| Vino | **Transformar** |
+| Aceite | Reservada para efectos nuevos más adelante |
+
+### 4.3 Tratamientos y pasos
+
+Cada ingrediente se puede preparar antes de echarlo (propuesta por probar):
+
+| Tratamiento | Dónde | Efecto |
 | --- | --- | --- |
-| Hervir | Fuelle bajo el caldero | **Potenciar** |
-| Congelar | Runa de escarcha | **Suprimir** |
-| Macerar | Lente de luna | **Transformar** |
-
-### 4.3 Modificadores (pasos opcionales)
+| Entero | Directo al caldero | Suelta sus esencias poco a poco, un punto por vuelta de reloj de arena. Máximo control |
+| Troceado | Cuchillo | La mitad al echarlo y el resto en la vuelta siguiente |
+| Molido | Mortero | Todo de golpe y un punto más de su esencia principal. Más fuerza, menos control |
+| Tostado | Sobre el fuego | Pierde su esencia menor: evita el efecto secundario sin alambique |
 
 | Paso | Dónde | Efecto |
 | --- | --- | --- |
-| Majar | Mortero, antes de echar el ingrediente | Efecto inmediato y más intensidad de ese ingrediente |
+| Hervor | Fuego y reloj de arena | Cada vuelta de más, con todo ya suelto, suma un punto a todas las esencias presentes. Pasar de 9 en una revienta el caldero |
 | Destilar | Alambique, después de embotellar | Quita el efecto secundario, pero **baja un escalón de intensidad** (se pierde volumen). Un Leve no se puede destilar. El alambique tiene **2 usos al día** (ampliable) |
 | Fermentar | Barril, después de embotellar | Más duración. **Tarda 1 día** (está lista al amanecer) |
 
@@ -153,17 +172,19 @@ Aparecen si la segunda esencia llega a un umbral (por decidir: ≥ 1 punto o ≥
 
 ### 4.6 Cantidad, intensidad y calidad
 
-- **Intensidad** según los puntos de la esencia dominante (tras cancelar): Leve · Normal · Fuerte · Desmedido.
+- **Intensidad** según los puntos de la esencia dominante (tras cancelar), que crecen con el tiempo de hervor: Leve · Normal · Fuerte · Desmedido.
+- **Lotes:** cada preparación da 3 o 4 frascos iguales (un caldero mejor da más) y dura de 30 a 60 segundos reales.
 - **Desmedido** puede hacer el efecto permanente o hacer explotar el caldero.
-- **Calidad (★ a ★★★)** según el minijuego del caldero (remover en círculo con el dedo, mantener la aguja en la zona buena). Afecta al precio y a la probabilidad del secundario.
+- **Calidad (★ a ★★★)** según la precisión: tratamiento bien hecho, hervor justo y remover con calma. Las prisas la bajan. Afecta al precio y a la probabilidad del secundario.
+- **Lectura a ojo:** el color, las burbujas y el vapor dicen qué hay en el caldero, y Gus comenta el olor. El **aerómetro**, que se compra en el mercado, muestra las esencias con cifras.
 
 ### 4.7 Descubrimiento
 
 - Un ingrediente nuevo muestra sus esencias como «???» hasta que se echa al caldero por primera vez. Entonces las probetas reaccionan y quedan apuntadas en el códice.
 - Un efecto de la tabla está oculto hasta que se consigue por primera vez. Cuando ya se conoce, el caldero **predice** el resultado mientras mezclas («→ Silencio · Normal · secundario: hipo con humo»). Conocimiento = poder en la interfaz.
 - **Gus, el becario homúnculo**, prueba pociones antes de venderlas: muestra el efecto real y el secundario. Solo aguanta 3 pruebas al día (se marea). Sin probar, vendes a ciegas.
-- Las **recetas del mercado** llegan incompletas o dañadas («Susurro embotellado + ??? · congelar»).
-- Las **recetas guardadas** se pueden repetir con *elaboración rápida* (sin minijuego, calidad ★★ como máximo) para no repetir el trabajo.
+- **Recetas:** el procedimiento correcto escrito (base, ingredientes con su tratamiento, orden, vueltas de reloj y pasos finales). Se **compran** al librero del mercado, a veces incompletas o dañadas, o se **descubren**: si experimentando sale algo útil y Gus lo prueba, se apunta en tu recetario.
+- **Repetir:** cada preparación da varios frascos, así que no hay elaboración rápida. Más adelante, los **becarios** preparan por ti recetas hasta cierta complejidad (ver [decisiones.md](decisiones.md), «Personal»).
 
 ### 4.8 Ingredientes de ejemplo
 
@@ -227,7 +248,7 @@ Los aspectos de los clientes se montan por piezas (cuerpo, cabeza, pelo, sombrer
 
 ## 6. Mercado
 
-- **Días de mercado** (por decidir: cada 3 días o semanal). Se visita en la fase de Taller y no consume tiempo.
+- **Abre de lunes a sábado.** Ir al mercado **deja la tienda cerrada** y el reloj sigue corriendo: comprar rápido o con calma es una decisión. El domingo no hay mercado.
 - **Puestos** con mercaderes con personalidad: herbolaria, pescadero de criaturas, librero de pergaminos (recetas dañadas y tratados que revelan esencias), chatarrero de herramientas.
 - **Regateo:** minijuego rápido. Cada mercader tiene su paciencia y sus manías.
 - **Precios dinámicos** según estación y sucesos de la Gaceta («Plaga de ranas» → ranas baratas).
@@ -263,12 +284,8 @@ Todo el texto se genera con plantillas e idiomas intercambiables: nada de texto 
 
 ## 10. Para el juego completo (apuntado tras probar los mockups)
 
-- **Tutorial y preapertura** (ya en el mockup v0.8):
-  - El primer día empieza con la persiana a medio bajar y un cartel de «Cerrado». En el mostrador hay una carta de Remedios, la antigua dueña.
-  - Gus guía paso a paso desde un panel arriba e ilumina lo que hay que tocar. Primero, Valor (Guindilla + Hervir + remover + embotellar + guardar). Después, Silencio (Susurro + Congelar), que se prueba en Gus para descubrir qué hace. La tercera poción es libre.
-  - No se puede abrir hasta tener 3 pociones en la vitrina, también si te saltas las explicaciones («Ya conozco el oficio»).
-  - Al subir la persiana llegan el edicto, la cola (entra andando) y el primer cliente. Un aviso explica Apuntar y Rechazar.
-  - Si te adelantas, el tutorial te sigue. Si el caldero explota, vuelve al paso de la guindilla.
+- **Tutorial:** la partida empieza en domingo, con la tienda cerrada. La carta de Remedios y Gus enseñan el oficio con la alquimia nueva, y el lunes se abre por primera vez sin la vitrina vacía. El mockup v0.8 tiene una versión anterior (preapertura con 3 pociones obligatorias) que habrá que rehacer.
+- **Personal:** Gus como catador o entretenedor (una cosa cada vez), un segundo ayudante y becarios con nivel que preparan recetas por ti. Detalle en [decisiones.md](decisiones.md).
 - **Ampliar la vitrina.** 6 huecos al principio; mejoras de la tienda para pasar a 9, 12… y el **almacén** (la pared de atrás) como depósito de pociones y de ingredientes.
 - **Mejoras del alambique** (más usos al día) y de otras herramientas.
 
@@ -277,5 +294,7 @@ Todo el texto se genera con plantillas e idiomas intercambiables: nada de texto 
 - [ ] Montura de la tienda ambulante: caracol gigante, gólem o carromato.
 - [ ] ¿Vialix comparte mundo con AdventurersGuild? (su diseño ya lo menciona: héroes del gremio como clientes, cameos).
 - [ ] Umbral exacto del efecto secundario y escalones de intensidad (se ajusta en el prototipo).
-- [ ] Frecuencia del mercado y de los urgentes.
+- [ ] Frecuencia de los urgentes.
+- [ ] Velocidades del reloj (2 min por hora de madrugada y 40 s abierto son provisionales).
+- [ ] Qué hace cada base y cada tratamiento (propuestas de la sección 4, por probar).
 - [ ] Monetización.
