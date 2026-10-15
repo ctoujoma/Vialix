@@ -15,6 +15,7 @@ Referencia principal: *The Secret of Monkey Island* y *Monkey Island 2: LeChuck'
 - **Arquitectura ligeramente torcida**, sutil: fachadas que se inclinan un poco y tejados algo combados. No es el foco.
 - **Pixel art a unos 180 px de ancho**, escalado a múltiplos enteros, como hasta ahora.
 - **Colores de las esencias** reservados: ningún fondo usa sus tonos más saturados, para que una poción siempre se lea.
+- **Prueba v0.9 (solo la calle de la ventanilla):** las piezas se pintan igual y al final se gradúan. Bajan la saturación y el contraste con la distancia, hacia un tono medio malva; las sombras van hacia el violeta azulado y las luces hacia el ocre; y todo se reduce a una paleta de 77 tonos (11 rampas de 7) con un tramado ordenado suave. La gente no se gradúa, para que resalte. Un botón «Estilo» en la ventanilla cambia entre este estilo y el anterior para comparar.
 - **Pendiente de valorar más adelante:** reducir partículas y brillos, diálogo como texto de color sobre el personaje, interfaz de madera apagada y una sola fuente pixel. De momento la interfaz no cambia.
 
 ## Producción: el arte vive en el código

@@ -37,6 +37,8 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 #vitHint.go{color:var(--gold);cursor:pointer;animation:hintpulse 1.4s ease-in-out infinite}
 @keyframes hintpulse{50%{box-shadow:0 0 0 2px var(--ink),0 0 14px rgba(255,211,77,.6),inset 0 0 0 1px rgba(255,211,77,.6)}}
 #vitHint .arr{animation:blink 1s steps(2) infinite}
+#bArt{position:absolute;right:8px;top:44px;z-index:5;font-size:12px;cursor:pointer}
+#bArt b{color:var(--gold);font-weight:500}
 #vitChip{position:absolute;right:8px;top:84px;z-index:5;font-size:12px;cursor:pointer}
 #vitChip b{color:var(--gold)}
 #vitChip img{width:14px;height:14px}
@@ -268,6 +270,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     </div>
     <div id="vNext" hidden><button class="btn gold big" id="bNext"><img class="pximg" id="iBell" alt="">Llamar al siguiente</button></div>
     <div id="vitHint" hidden></div>
+    <button class="chip" id="bArt" aria-label="Cambiar el estilo de dibujo de la calle"></button>
     <div id="vClosed" hidden>CERRADO<small>Abrimos cuando haya género</small></div>
   </div></div><canvas class="ext pximg"></canvas><canvas class="ext pximg"></canvas><i class="shade"></i></div>
   <div class="face" id="fT"><div class="mid"><canvas class="scv" id="cvT"></canvas>
@@ -319,7 +322,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <h1 id="logo">Vialix</h1>
     <div class="tag">Botica de la plaza. Atiende la ventanilla, <em>interpreta</em> lo que piden y experimenta en el caldero.</div>
     <button class="btn gold big glowy" id="bStart">Abrir la botica</button>
-    <div class="ver">Mockup jugable · v0.8 · Desliza o usa las pestañas para girar la cámara</div>
+    <div class="ver">Mockup jugable · v0.9 · Desliza o usa las pestañas para girar la cámara</div>
   </div>
   <div id="ovLetter" class="ov" hidden></div>
   <div id="ovEdict" class="ov" hidden></div>
@@ -1099,7 +1102,9 @@ function paintHouse(g,x,base,hs,ph,r,L){
   return{top:y-rh}}
 // colección de casas al azar para una fila
 const WALLS=['#e9d6ae','#dcb27a','#d9a59a','#b6c096','#c4b2cf','#aebfcc','#e8bf96','#efe6d2','#d7c08e'],ROOFS=['#b04e36','#9a3f30','#c2603e','#4f5d82','#5e6a8a','#7c5a3e'],SHUTS=['#3f6b5a','#8a3a3a','#3f5a7a','#6a4a2a','#4f7a3a','#7a4a6a'],AWNS=['#c8323c','#2f7a3a','#3f5a7a','#a8642a','#8a3a6a'],SIGNS=['boot','bread','key','mug','fish','scissors'];
-function houseSpec(r,w,o={}){return Object.assign({w,floors:3+(r()<.35?1:0),wall:pick2(r,WALLS),stone:pick2(r,['#a39684','#968c80','#b1a48e','#8f8a86']),timber:r()<.62?(r()<.4?'x':'post'):null,roof:r()<.45?'gable':'eave',roofc:pick2(r,ROOFS),jetty:r()<.7,lean:r()<.4?(r()<.5?-.6:.6):0,shop:r()<.7,awn:r()<.6?pick2(r,AWNS):null,shut:r()<.7?pick2(r,SHUTS):null,box:r()<.7,sign:r()<.6?pick2(r,SIGNS):null,chim:r()<.7,dormer:r()<.5,doorL:r()<.5,doorc:pick2(r,['#6a4030','#5a3a5a','#3f5a4a','#7a4a2a']),roofH:.6+r()*.4,lamp:r()<.4},o)}
+function houseSpec(r,w,o={}){const hs=Object.assign({w,floors:3+(r()<.35?1:0),wall:pick2(r,WALLS),stone:pick2(r,['#a39684','#968c80','#b1a48e','#8f8a86']),timber:r()<.62?(r()<.4?'x':'post'):null,roof:r()<.45?'gable':'eave',roofc:pick2(r,ROOFS),jetty:r()<.7,lean:r()<.4?(r()<.5?-.6:.6):0,shop:r()<.7,awn:r()<.6?pick2(r,AWNS):null,shut:r()<.7?pick2(r,SHUTS):null,box:r()<.7,sign:r()<.6?pick2(r,SIGNS):null,chim:r()<.7,dormer:r()<.5,doorL:r()<.5,doorc:pick2(r,['#6a4030','#5a3a5a','#3f5a4a','#7a4a2a']),roofH:.6+r()*.4,lamp:r()<.4},o);
+  // en el estilo LucasArts casi todas las casas se inclinan un poco (sutil), sin tocar el sorteo
+  if(ART==='lucas'&&o.lean===undefined)hs.lean=hs.lean?hs.lean*1.4:[-.7,.5,0,.8,-.5][w%5];return hs}
 
 // ───────────────────────── sprites del taller ─────────────────────────
 const INGSPR={};
@@ -1574,9 +1579,36 @@ function pzLayout(){const o=V.o;PZ.CX=W/2;PZ.HY=o.y+V.hz;PZ.HE=V.cy-PZ.HY+14;PZ.
   PZ.shadows=[{x:PZ.fount.x+60,z:PZ.fount.z+40,rx:150,rz:70}];
   pzPalettes();pzBuild();PZ.gimg={};pzGroundFor(WX.ground)}
 function l0m(l){return l.m+l.h}
-function pzGroundFor(vr){if(!PZ.gimg[vr])PZ.gimg[vr]=buildGround(vr);PZ.ground=PZ.gimg[vr]}
+function pzGroundFor(vr){if(!PZ.gimg[vr]){const c=buildGround(vr);PZ.gimg[vr]=ART==='lucas'?laGrade(c,(x,y)=>laFar((y+1)/PZ.HE)*.85,5):c}PZ.ground=PZ.gimg[vr]}
 // cada pieza estática: imagen «en reposo» colocada a su profundidad
 function bb(d,img,x,y,o={}){return Object.assign({d,img,x,y},o)}
+// ── prueba de estilo v0.9: «LucasArts pintado» ──
+// Las piezas de la calle se pintan igual y al final se gradúan: menos saturación y menos contraste cuanto más lejos,
+// sombras hacia el violeta y luces hacia el ocre, y todo reducido a una paleta corta de la escena con tramado ordenado.
+// Así el fondo calla y la gente (que no se gradúa) resalta. ART guarda el estilo elegido para comparar con el anterior.
+let ART='lucas';try{ART=localStorage.getItem('vialix-art')||'lucas'}catch(_){}
+const LA={pal:null,lut:null};
+function laPal(){if(LA.pal)return LA.pal;const B=['#a89270','#c49a6a','#a85a44','#6a7a4a','#56688a','#6a5478','#7a5236','#d8a07a','#9a3a3a','#e8dcc0','#3e4a78'];const out=[];
+  for(const b of B)for(let i=0;i<7;i++){const t=i/6;out.push(h2r(t<.5?mix(mix(b,'#1c1232',.82),b,t*2):mix(b,'#fff0c8',(t-.5)*1.5)))}
+  LA.pal=out;LA.lut=new Int16Array(32768).fill(-1);return out}
+function laNear(r,g,b){const P=laPal();const key=((r>>3)<<10)|((g>>3)<<5)|(b>>3);let i=LA.lut[key];
+  if(i<0){const R0=(r&248)+4,G0=(g&248)+4,B0=(b&248)+4;let bd=1e12;for(let k=0;k<P.length;k++){const p=P[k],dr=p[0]-R0,dg=p[1]-G0,db=p[2]-B0;const dd=2*dr*dr+4*dg*dg+3*db*db;if(dd<bd){bd=dd;i=k}}LA.lut[key]=i}
+  return P[i]}
+function laGrade(c,farAt,spread=9){if(!c||!c.width||!c.height)return c;const g=c.getContext('2d');const w=c.width,h=c.height;const id=g.getImageData(0,0,w,h),d=id.data;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const o=(y*w+x)*4;if(d[o+3]<8)continue;const f=farAt(x,y);let r=d[o],gg=d[o+1],b=d[o+2];const L=(r*.3+gg*.59+b*.11)/255;
+    // menos saturación y contraste con la distancia: hacia un tono medio malva, no hacia el blanco
+    const sa=.1+.22*f;r+=(L*255-r)*sa;gg+=(L*255-gg)*sa;b+=(L*255-b)*sa;
+    const ct=.42*f;r+=(150-r)*ct;gg+=(138-gg)*ct;b+=(156-b)*ct;
+    // sombras hacia el violeta azulado y luces hacia el ocre
+    const k1=(1-L)*(1-L)*.4;r+=(46-r)*k1;gg+=(38-gg)*k1;b+=(88-b)*k1;
+    const k2=L*L*.28;r+=(240-r)*k2;gg+=(200-gg)*k2;b+=(130-b)*k2;
+    const dt=(BAYER[(y&3)*4+(x&3)]-.5)*spread;const p=laNear(clamp(r+dt,0,255)|0,clamp(gg+dt,0,255)|0,clamp(b+dt,0,255)|0);d[o]=p[0];d[o+1]=p[1];d[o+2]=p[2]}
+  g.putImageData(id,0,0);return c}
+const laFar=k=>clamp((.5-k)/.4,0,1)*.8;
+function laGradeAll(){for(const it of PZ.items){if(!it.img)continue;const f=it.far?(it.img===PZ.mount?1:.92):it.tower?.78:it===PZ.back?.62:it.sc?.55:laFar(kOf(it.d));laGrade(it.img,()=>f);if(it.night)laGrade(it.night,()=>f)}
+  for(const W2 of PZ.walls)for(const v of[W2.day,W2.night])laGrade(v.img,x=>laFar(kOf(v.depth[clamp(x,0,v.depth.length-1)])))}
+function setArt(m){ART=m;try{localStorage.setItem('vialix-art',m)}catch(_){}const sn=PZ.snowy;PZ.snowy=0;PZ.gimg={};pzBuild();pzGroundFor(WX.ground);if(sn)pzSnowify();artChip()}
+function artChip(){const b=$('#bArt');if(b)b.innerHTML='Estilo · <b>'+(ART==='lucas'?'LucasArts':'anterior')+'</b>'}
 function pzBuild(){const it=[];const CX=PZ.CX;PZ.items=it;PZ.lights=[];
   // montañas y ciudad lejana, que se repiten
   PZ.mount=paintMountains();PZ.farDay=paintFarCity(false);PZ.farNight=paintFarCity(true);
@@ -1615,6 +1647,7 @@ function pzBuild(){const it=[];const CX=PZ.CX;PZ.items=it;PZ.lights=[];
   const kn=.8,np=phOf(kn)*.42;const nr=paintNear(np);it.push(bb(dOf(kn),nr.img,V.o.x-Math.round(nr.img.width*.35),Math.round(gyOf(kn))-nr.base,{cat:1}));
   const br=paintBarrel(np*1.1);it.push(bb(dOf(kn),br.img,V.o.x+V.o.w-Math.round(br.img.width*.6),Math.round(gyOf(kn))-br.base));
   PZ.ground=null;
+  if(ART==='lucas')laGradeAll();
 }
 // ── el clima ──
 const WX={kind:'sol',ground:'dry',t:{over:0,rain:0,snow:0,fog:0,storm:0,wind:.25},c:{over:0,rain:0,snow:0,fog:0,storm:0,wind:.25},bands:[[],[],[]],wisps:[],glass:[],flash:0,bolt:0,boltT:6};
@@ -1644,7 +1677,7 @@ function snowCap(src){const[c,g]=mk(src.width,src.height);g.drawImage(src,0,0);c
 function pzSnowify(){if(PZ.snowy)return;PZ.snowy=1;for(const it of PZ.items){if(it.img&&!it.far){it.img=snowCap(it.img);if(it.night)it.night=snowCap(it.night)}}for(const w of PZ.walls){w.day.img=snowCap(w.day.img);w.night.img=snowCap(w.night.img)}}
 function pzUnsnow(){if(!PZ.snowy)return;PZ.snowy=0;pzBuild();pzGroundFor(WX.ground)}
 // ── el dibujo de la plaza ──
-function skyNow(){let[a,b]=skyCols(S.dayT);const c=WX.c;if(c.over>0){const n=S.dayT>1;a=mix(a,n?'#1c1a2a':'#6e7488',c.over*.85);b=mix(b,n?'#2a2838':'#a3a8ba',c.over*.85)}if(c.fog>0){a=mix(a,'#b9bccb',c.fog*.6);b=mix(b,'#d6d8e2',c.fog*.7)}return[a,b]}
+function skyNow(){let[a,b]=skyCols(S.dayT);if(ART==='lucas'){a=mix(a,'#3a3a78',.32);b=mix(b,'#e8c8a0',.3)}const c=WX.c;if(c.over>0){const n=S.dayT>1;a=mix(a,n?'#1c1a2a':'#6e7488',c.over*.85);b=mix(b,n?'#2a2838':'#a3a8ba',c.over*.85)}if(c.fog>0){a=mix(a,'#b9bccb',c.fog*.6);b=mix(b,'#d6d8e2',c.fog*.7)}return[a,b]}
 const FOGT=[30000,9000,4000,2400,1500,900,450];
 V.renderOutdoor=function(){pzEye();const g=this.g,o=this.o,t=clock,c=WX.c,CX=PZ.CX,HY=PZ.HY;
   g.save();g.beginPath();g.rect(o.x,o.y,o.w,o.h);g.clip();
@@ -1671,7 +1704,7 @@ V.renderOutdoor=function(){pzEye();const g=this.g,o=this.o,t=clock,c=WX.c,CX=PZ.
   const all=PZ.items.concat(dyn).sort((a,b)=>b.d-a.d);
   const hazeC=mix(sk[1],'#c9cfe0',.4),fogC=mix(sk[1],'#d2d4de',.5);let ft=0;
   for(const it of all){
-    while(ft<FOGT.length&&it.d<FOGT[ft]){const a=(ft<3?.07:0)*(1-c.fog)+c.fog*[.16,.15,.14,.13,.12,.1,.07][ft];if(a>0){g.setTransform(1,0,0,1,0,0);g.globalAlpha=a;R(g,o.x,o.y,o.w,o.h,c.fog>.3?fogC:hazeC);g.globalAlpha=1}ft++}
+    while(ft<FOGT.length&&it.d<FOGT[ft]){const a=(ft<3?(ART==='lucas'?.03:.07):0)*(1-c.fog)+c.fog*[.16,.15,.14,.13,.12,.1,.07][ft];if(a>0){g.setTransform(1,0,0,1,0,0);g.globalAlpha=a;R(g,o.x,o.y,o.w,o.h,c.fog>.3?fogC:hazeC);g.globalAlpha=1}ft++}
     pzDraw(g,it,night,t)}
   // tinte de la hora y del tiempo, y luces encima
   g.setTransform(1,0,0,1,0,0);
@@ -2064,7 +2097,7 @@ function say(name,text,cb,dragon){const b=$('#bubble');b.hidden=false;$('#bName'
 function updSay(dt){if(!sayState||sayState.done)return;sayState.t+=dt*(sayState.dragon?30:44);const n=Math.min(sayState.text.length,sayState.t|0);if(n!==sayState.i){$('#bText').textContent=sayState.text.slice(0,n);if(n%2===0)(sayState.dragon?AU.dragonBlip():AU.blip());sayState.i=n}if(n>=sayState.text.length)finishSay()}
 function finishSay(){if(!sayState||sayState.done)return;sayState.done=true;$('#bText').textContent=sayState.text;V.talking=false;const cb=sayState.cb;sayState.cb=null;if(cb)later(.35,cb)}
 $('#bubble').addEventListener('click',()=>{if(sayState&&!sayState.done)finishSay()});
-function placeUI(){const hb=Math.ceil($('#cDay').getBoundingClientRect().bottom-frame.getBoundingClientRect().top)||36;const b=$('#bubble');b.style.top=(hb+14)+'px';$('#waitBadge').style.top=(hb+10)+'px';$('#vitChip').style.top=(hb+44)+'px';$('#coach').style.top=(hb+10)+'px';PZ.hudB=hb;
+function placeUI(){const hb=Math.ceil($('#cDay').getBoundingClientRect().bottom-frame.getBoundingClientRect().top)||36;const b=$('#bubble');b.style.top=(hb+14)+'px';$('#waitBadge').style.top=(hb+10)+'px';$('#vitChip').style.top=(hb+44)+'px';$('#bArt').style.top=(hb+10)+'px';$('#coach').style.top=(hb+10)+'px';PZ.hudB=hb;
   const pr=$('#predict');pr.style.top=((T.rimY-T.probeTop>0?T.rackY+14:T.rimY-40)*u)+'px';
   $('#potInfo').style.bottom=((H-V.cy+6)*u)+'px';$('#vitHint').style.top=((V.cy+8)*u-3)+'px';
   placeNavInd()}
@@ -2225,6 +2258,7 @@ $('#bNext').onclick=()=>{if(S.prep)openShop();else if(S.queue.length)V.callNext(
 document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>T.setMode(b.dataset.m)));
 $('#bBottle').onclick=()=>T.bottle();
 $('#bCodex').onclick=()=>showCodex();
+$('#bArt').onclick=()=>{setArt(ART==='lucas'?'actual':'lucas');toast(ART==='lucas'?'Estilo LucasArts (prueba v0.9): paleta corta y fondo suave.':'Estilo anterior, para comparar.')};
 $('#waitBadge').onclick=()=>navTo(0);
 $('#vitChip').onclick=()=>navTo(0);
 $('#vitHint').onclick=()=>{if($('#vitHint').classList.contains('go'))navTo(1)};
@@ -2266,7 +2300,7 @@ function boot(){
   S.ambient=[{spec:{skin:'#e0a57a',hair:'#3a2418',cloth:'#4f8a4a',hat:'pointy',hatc:'#3f5a7a'},mods:{float:1}},{spec:{skin:'#f2c9a0',hair:'#c99a2e',cloth:'#b5463f',hat:'none',dress:1},mods:{duck:1}},{spec:{skin:'#b9784f',hair:'#1c1b29',cloth:'#c48a3a',hat:'cap'},mods:{scale:.45,spark:'#c9b6ff',qm:1}},{spec:{skin:'#f0d0b8',hair:'#7a4a2a',cloth:'#3f6fb5',hat:'none'},mods:{tint:'#a3a1b5'}},{spec:{skin:'#e0a57a',hair:'#9a92b5',cloth:'#8a5bb5',hat:'hood'},mods:{hearts:1}}];
   $('#iCoin').src=ICON.coin;$('#iCam').src=ICON.cam;$('#iSun').src=ICON.sun;$('#iBell').src=ICON.bell;$('#iBook').src=ICON.book;
   try{AU.on=localStorage.getItem('vialix-sound')!=='0'}catch(_){}
-  $('#iSound').src=AU.on?ICON.snd:ICON.mute;
+  $('#iSound').src=AU.on?ICON.snd:ICON.mute;artChip();
   const navImgs=document.querySelectorAll('#nav button img');navImgs[0].src=ICON.win;navImgs[1].src=ICON.caul;navImgs[2].src=ICON.crate;navImgs[3].src=ICON.stall;
   const mi=document.querySelectorAll('.mode img');mi[0].src=ICON.flame;mi[1].src=ICON.snow;mi[2].src=ICON.moon;
   S.queue=['pellejo','mantecas','gorzag'];S.total=3;
