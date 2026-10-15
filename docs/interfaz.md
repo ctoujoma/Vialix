@@ -11,6 +11,7 @@
 5. **La escena es el tutorial.** Las probetas, el caldero y Gus explican el sistema con animaciones, sin muros de texto.
 6. **Todo se lee sin color.** Cada esencia tiene color y símbolo.
 7. **Todo el texto es traducible.** Nada de texto en imágenes; claves de idioma desde el primer día.
+8. **Nada de texto pedante.** Lo que se ve no se explica (el color del caldero, los frascos de la vitrina). Las explicaciones de cómo se juega salen solo las primeras veces y luego desaparecen. Los avisos son cortos y de uno en uno. Antes de añadir un texto, pregunta si dice algo que la pantalla no muestre ya.
 
 **Mockup jugable:** [`mockup/vialix.html`](mockup/vialix.html).
 
@@ -96,7 +97,7 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
   - Cuando ya no queda nada por soltar, cada vuelta de más concentra la mezcla (+1 a todo) hasta el ¡bum!
   - «Retirar» lo saca del fuego. Si lo retiras justo cuando se acaba la arena, el botón dice «¡Justo!». Si lo retiras a media vuelta («A medias»), la poción pierde una estrella y no cuenta como receta seguida al pie de la letra.
 - **Animaciones:** chorro de la jarra al verter la base. El ingrediente vuela al caldero según su estado: en pedazos, como polvo de su color o tostado con humo (negro si se quemó). Al caer, el molido levanta una nube y el troceado salpica en varios sitios.
-- **Lectura a ojo:** el color del líquido es la esencia dominante, su viveza es la intensidad, y el color del vapor es la segunda esencia. Gus comenta a qué huele al acabar cada vuelta. Si el efecto ya se conoce, el panel dice «huele a Valor».
+- **Lectura a ojo:** el color del líquido es la esencia dominante, su viveza es la intensidad, y el color del vapor es la segunda esencia. No se describe con palabras: se mira. Gus comenta a qué huele al retirar el caldero, y si el efecto ya se conoce el panel dice «Huele a Valor».
 - **Aerómetro:** tapado con un paño. Al comprarlo (en el mockup, gratis) se destapan las probetas con cifras y la predicción completa.
 - **Remover:** igual que antes, sube la calidad. Quemar un ingrediente la baja, y seguir una receta al pie de la letra la sube.
 - **Lote:** cada preparación da 3 frascos.
@@ -104,6 +105,14 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
   - Si Gus prueba algo útil hecho sin receta, se apunta en tu recetario.
 - **Recetario** en el libro (códice): las recetas de Remedios (una con una mancha de tinta) y las tuyas.
 - **Igual que antes:** la vista desde arriba del caldero con su shader, la explosión con hollín, Gus y el nicho en 3D.
+
+### 2.4 Modo foco (contrarreloj)
+
+Mientras el caldero está al fuego o se prepara un ingrediente, la pantalla se calla para que se pueda mirar la arena:
+- Solo quedan el aviso del cliente (nombre y una barrita de paciencia, sin frases), una línea de lectura del caldero y el botón del reloj.
+- Se ocultan el contador de la vitrina, el botón del aerómetro, la segunda línea de la lectura y los comentarios de Gus. Gus comenta el olor una vez, al retirar el caldero.
+- Los avisos no urgentes esperan a que acabe el contrarreloj y salen de uno en uno. Los urgentes (en rojo) salen al momento.
+- Las indicaciones del caldero («Elige la base», «Ponlo al fuego») solo salen hasta la primera poción.
 
 ## 3. Pantallas y paneles
 

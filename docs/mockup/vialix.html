@@ -167,6 +167,9 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 #coach b i{font-style:normal;color:#7a5a3a;letter-spacing:.04em}
 #coach .ok{display:block;margin-top:3px;font-size:11px;color:#a8642a;animation:blink 1s steps(2) infinite}
 .coaching #vitChip{display:none}
+.focus #vitChip,.focus #bAero,.focus #gusSay,.focus #predict small{display:none!important}
+#waitBadge .pb{display:inline-block;width:34px;height:4px;margin-left:7px;vertical-align:2px;background:#2a1c22;box-shadow:0 0 0 1px #140c1c}
+#waitBadge .pb i{display:block;height:100%}
 .prepping #bClock,.prepping #bAero,.prepping #predict,.prepping #gusSay,.treating #bClock{visibility:hidden}
 .tuto{animation:tuto 1.1s ease-in-out infinite!important;position:relative;z-index:7}
 @keyframes tuto{50%{box-shadow:0 0 0 2px var(--ink),0 0 0 4px var(--gold),0 0 20px 6px rgba(255,211,77,.75)}}
@@ -357,7 +360,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <h1 id="logo">Vialix</h1>
     <div class="tag">Botica de la plaza. Atiende la ventanilla, <em>interpreta</em> lo que piden y experimenta en el caldero.</div>
     <button class="btn gold big glowy" id="bStart">Abrir la botica</button>
-    <div class="ver">Mockup jugable · v0.11 · Desliza o usa las pestañas para girar la cámara</div>
+    <div class="ver">Mockup jugable · v0.11.1 · Desliza o usa las pestañas para girar la cámara</div>
   </div>
   <div id="ovLetter" class="ov" hidden></div>
   <div id="ovEdict" class="ov" hidden></div>
@@ -1948,7 +1951,7 @@ const T={buf:null,g:null,parts:[],pot:{ings:[],items:[],mode:null,turns:0,burnt:
     const gs=this.gus;gs.t+=dt;if(gs.modT>0){gs.modT-=dt;if(gs.modT<=0){gs.mods={};AU.poof();for(let i=0;i<12;i++)part(this.parts,{k:'smoke',x:this.gx+13+rnd(-8,8),y:this.gy+rnd(4,24),vx:rnd(-12,12),vy:rnd(-12,2),life:.7,max:.7,r:3,c:'#ffffff'})}}
     gs.blink=(gs.blink||3)-dt;if(gs.blink<-.12)gs.blink=rnd(2,5);
     emit(this.parts,gs,dt,this.gx+14,this.gy+4,this.gx+13,this.gy+17,-1,1);
-    if(gs.say>0){gs.say-=dt;if(gs.say<=0)$('#gusSay').hidden=true}
+    if(gs.say>0){gs.say-=dt;if(gs.say<=0){$('#gusSay').hidden=true;later(.3,flushToasts)}}
     if(this.bottling)this.updBottle(dt);
     if(this.pour){this.pour.t+=dt;if(this.pour.t>.4&&this.pour.t<.85&&Math.random()<.6)this.ripples.push({x:this.cx-6+rnd(-3,3),y:this.rimY,t:0});if(this.pour.t>1.1)this.pour=null}
     if(this.tremble>0)this.tremble-=dt;
@@ -2043,34 +2046,34 @@ const T={buf:null,g:null,parts:[],pot:{ings:[],items:[],mode:null,turns:0,burnt:
   // girar el reloj de arena: una vuelta de hervor
   // poner al fuego y retirar: como en Kingdom Come, la gracia está en retirarlo justo cuando se acaba la arena
   toggleFire(){if(this.busy||this.bottling)return;if(this.fire){this.retire();return}
-    if(!this.pot.mode){toast('Primero la base: Agua, Aguardiente o Vino.',true);return}if(!this.pot.items.length){toast('Echa algún ingrediente antes de ponerlo al fuego.');return}
+    if(!this.pot.mode){toast('Primero la base: Agua, Aguardiente o Vino.',true);return}if(!this.pot.items.length){toast('Falta algún ingrediente.');return}
     this.fire=true;this.boilT=0;this.flipT=.3;AU.noise(.5,.08,2400,900,.4,'highpass');AU.tone(330,.08,'triangle',.05);refreshPredict()},
   retire(){if(!this.fire)return;const f=this.boilT/TURN;this.fire=false;this.boilT=0;let j;
     if(f>=.86){this.endTurn();j='justo'}else if(f<=.14){j=this.pot.turns?'justo':null}else{this.pot.half++;j='medias'}
     if(j==='justo'){AU.tone(988,.12,'triangle',.06);AU.tone(1318,.16,'triangle',.05)}else if(j){AU.tone(220,.2,'square',.04)}
-    this.judge=j;this.judgeT=j?1.6:0;AU.noise(.3,.1,600,200,.4,'lowpass');refreshPredict()},
+    this.judge=j;this.judgeT=j?1.6:0;AU.noise(.3,.1,600,200,.4,'lowpass');refreshPredict();
+    if(!S.aero&&this.pot.turns)later(1.2,()=>{if(this.pot.items.length&&!this.fire&&st()===1)gusSay(smellLine())})},
   endTurn(){const P=this.pot;P.turns++;AU.tone(660,.12,'triangle',.06);AU.tone(880,.12,'triangle',.05);let any=false,d=0;
     for(const it of P.items){for(const k in it.rem){if(it.rem[k]<=0)continue;const n=it.t==='troceado'?it.rem[k]:1;any=true;this.release(k,n,it.x,d);it.rem[k]-=n;d+=.05*n}}
     if(!any){// ya no queda nada por soltar: la vuelta de más concentra todo lo que hay
       let c=0;for(const k of ORD)if(this.raw[k]>0){this.release(k,1,this.cx,c*.1);c++}
       for(let i=0;i<10;i++)part(this.parts,{k:'smoke',x:this.cx+rnd(-20,20),y:this.rimY-4,vx:rnd(-8,8),vy:-rnd(10,20),life:1.2,max:1.2,r:rnd(3,6),c:'#e6dcf0'});
-      if(!this._concTold){this._concTold=1;toast('Ya no suelta nada: cada vuelta de más concentra la mezcla.')}}
-    if(!S.aero)later(1.3,()=>{if(this.pot.items.length&&st()===1)gusSay(smellLine())});
+      if(!S.flags.concTold){S.flags.concTold=1;toast('Ya no suelta más: ahora cada vuelta concentra.')}}
     refreshPredict()},
   explode(){hitstop=.09;shake=RM?2:12;flash=RM?.1:.9;AU.boom();vibrate([60,40,120]);const cx=this.cx,cy=this.rimY;for(let i=0;i<60;i++)part(this.parts,{k:'px',x:cx+rnd(-10,10),y:cy,vx:rnd(-160,160),vy:rnd(-220,-40),g:300,life:1.4,max:1.4,c:pick([this.mixCol,'#ffd34d','#ff5a36','#2b2a3d']),sz:pick([1,2,2,3]),fl:this.floorY-6});for(let i=0;i<24;i++)part(this.parts,{k:'smoke',x:cx+rnd(-30,30),y:cy+rnd(-20,10),vx:rnd(-30,30),vy:rnd(-30,-5),life:2,max:2,r:rnd(5,10),c:'#3d3c55'});for(let i=0;i<12;i++)part(this.parts,{k:'glow',x:cx+rnd(-30,30),y:cy+rnd(-30,10),life:.5,max:.5,r:20,c:'#ffb050',a:.9});
-    this.reset();S.flags.gusSoot=true;S.exploded=true;this.busy=false;later(.3,()=>{showSoot();gusSay('¿Otra vez? Pido un plus de peligrosidad.');});later(.6,()=>toast('¡BUM! Pasar de 9 puntos en una esencia revienta el caldero.',true))},
-  reset(){this.pot={ings:[],items:[],mode:null,turns:0,burnt:0,half:0};this.fire=false;this.boilT=0;this.raw={ign:0,acu:0,ter:0,ete:0,cao:0};this.stir=0;document.querySelectorAll('.mode').forEach(b=>b.classList.remove('on'));refreshPredict()},
-  setMode(m){if(this.busy)return;if(this.pot.items.length){if(m!==this.pot.mode)toast('Ya hay una base en el caldero. Embotella antes de cambiarla.',true);return}
+    this.reset();S.flags.gusSoot=true;S.exploded=true;this.busy=false;later(.3,()=>{showSoot();gusSay('¿Otra vez? Pido un plus de peligrosidad.');});if(!S.flags.boomTold){S.flags.boomTold=1;later(.6,()=>toast('¡BUM! Pasar de 9 en una esencia revienta el caldero.',true))}},
+  reset(){this._lookCounted=0;this.pot={ings:[],items:[],mode:null,turns:0,burnt:0,half:0};this.fire=false;this.boilT=0;this.raw={ign:0,acu:0,ter:0,ete:0,cao:0};this.stir=0;document.querySelectorAll('.mode').forEach(b=>b.classList.remove('on'));refreshPredict()},
+  setMode(m){if(this.busy)return;if(this.pot.items.length){if(m!==this.pot.mode)toast('Primero embotella lo que hay.',true);return}
     this.pot.mode=this.pot.mode===m?null:m;document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('on',b.dataset.m===this.pot.mode));
     if(this.pot.mode){this.pour={t:0,m:this.pot.mode};AU.noise(.7,.12,500,1400,.5,'lowpass');later(.35,()=>AU.splash());for(let i=0;i<10;i++)part(this.parts,{k:'px',x:this.cx+rnd(-20,20),y:this.rimY-1,vx:rnd(-30,30),vy:rnd(-50,-20),g:220,life:.5,max:.5,c:BASEC[this.pot.mode],fl:this.rimY+1})}
     this.stir=0;refreshPredict()},
   pointer(type,x,y,dt){const cx=this.cx,cy=this.rimY;
     if(type==='down'){if(hit({x:this.gx,y:this.gy,w:28,h:32},x,y,2)){AU.squeak();gusSay(S.gus>0?pick(['¿Sí, jefe?','Si es para probar algo, quedan '+S.gus+' pruebas.','No cobro, pero tengo sentimientos.']):'Hoy no, jefe. Mi estómago está en huelga.');return true}
-      if(Math.abs(x-cx)<this.rx+8&&y>cy-this.ry-10&&y<cy+this.ry+14){if(!this.pot.mode){toast('Primero la base: Agua, Aguardiente o Vino.');return true}if(!this.pot.items.length){toast('Echa algún ingrediente desde el estante.');return true}this.stirring=true;this.lastA=Math.atan2((y-cy)*this.rx/this.ry,x-cx);this.lastT=performance.now();return true}return false}
+      if(Math.abs(x-cx)<this.rx+8&&y>cy-this.ry-10&&y<cy+this.ry+14){if(!this.pot.mode){toast('Primero la base: Agua, Aguardiente o Vino.');return true}if(!this.pot.items.length){toast('Falta algún ingrediente.');return true}this.stirring=true;this.lastA=Math.atan2((y-cy)*this.rx/this.ry,x-cx);this.lastT=performance.now();return true}return false}
     if(type==='move'&&this.stirring){const a=Math.atan2((y-cy)*this.rx/this.ry,x-cx);let d=a-this.lastA;if(d>Math.PI)d-=TAU;if(d<-Math.PI)d+=TAU;const now=performance.now(),dt2=Math.max(.008,(now-this.lastT)/1000);this.lastA=a;this.lastT=now;const sp=Math.abs(d)/dt2;this.swirl+=d;
       if(sp>2.5&&sp<16){this.stir+=Math.abs(d)/TAU;this.stirV=Math.min(1.5,(this.stirV||0)+Math.abs(d)*.6);if(Math.random()<.15)AU.tone(300+this.stir*60,.05,'sine',.03)}
       else if(sp>=16){if(Math.random()<.3){for(let i=0;i<4;i++)part(this.parts,{k:'px',x:cx+rnd(-this.rx,this.rx),y:cy-2,vx:rnd(-50,50),vy:rnd(-60,-20),g:200,life:.5,max:.5,c:this.mixCol});AU.tone(200,.05,'square',.02)}}
-      const q=qualOf(this.stir);if(q!==this._lq){this._lq=q;if(q>1){AU.magic();toast('Calidad '+'★'.repeat(q)+'☆'.repeat(3-q))}}refreshPredict();return true}
+      const q=qualOf(this.stir);if(q!==this._lq){this._lq=q;if(q>1)AU.magic()}refreshPredict();return true}
     if(type==='up'){this.stirring=false}
     return false},
   bottle(){if(this.busy||this.bottling)return;const an=potAn();if(!this.pot.items.length){toast(this.pot.mode?'Solo hay '+MODES[this.pot.mode].n.toLowerCase()+' en el caldero.':'El caldero está vacío.');return}
@@ -2081,7 +2084,7 @@ const T={buf:null,g:null,parts:[],pot:{ings:[],items:[],mode:null,turns:0,burnt:
     this.busy=true;const rar=['#ffffff','#ffffff','#7fd0ff','#ffd34d'][p.q];this.bottling={t:0,p,x:this.cx,y:this.rimY,spr:p.spr,spr2:scaled(p.spr,2),col:1,rar,colA:0};AU.magic();vibrate(20)},
   updBottle(dt){const b=this.bottling;b.t+=dt;const k=Math.min(1,b.t/1.1);this.drain=Math.round(easeIn(Math.min(1,b.t/.7))*8);b.y=lerp(this.rimY,this.probeTop+this.th*.55,easeOut(k));b.colA=Math.min(1,b.t*3)*(b.t>1.4?Math.max(0,1-(b.t-1.4)*3):1);if(Math.random()<.5)part(this.parts,{k:'glow',x:b.x+rnd(-8,8),y:b.y+rnd(-4,14),vy:20,life:.5,max:.5,r:2.5,c:b.rar,a:.9});
     if(b.t>1.1&&!b.burst){b.burst=1;AU.discover();for(let i=0;i<30;i++){const a=rnd(TAU),v=rnd(30,80);part(this.parts,{k:'px',x:b.x,y:b.y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,drag:3,life:.8,max:.8,c:pick([b.p.color,b.rar,'#ffffff']),front:1,glow:1,r:2,gc:b.rar,a:.7})}}
-    if(b.t>1.6){this.bottling=null;this.drain=0;this.busy=false;this.reset();this.lv={ign:0,acu:0,ter:0,ete:0,cao:0};showCard(b.p)}},
+    if(b.t>1.6){S.flags.brewed=1;this.bottling=null;this.drain=0;this.busy=false;this.reset();this.lv={ign:0,acu:0,ter:0,ete:0,cao:0};showCard(b.p)}},
 };
 const OPP={ign:'acu',acu:'ign',ter:'ete',ete:'ter'};
 function qualOf(st){return st<1?1:st<2.5?2:3}
@@ -2220,32 +2223,34 @@ function placeUI(){const hb=Math.ceil($('#cDay').getBoundingClientRect().bottom-
   $('#potInfo').style.bottom=((H-V.cy+6)*u)+'px';$('#vitHint').style.top=((V.cy+8)*u-3)+'px';
   placeNavInd()}
 function placeToast(){const t=$('#toast'),co=$('#coach');if(st()===0){t.style.top='auto';t.style.bottom=Math.round((H-V.cy)*u+52)+'px'}else{t.style.top=(co.hidden?(PZ.hudB||36)+84:co.offsetTop+co.offsetHeight+14)+'px';t.style.bottom='auto'}}
-let toastT=0;function toast(msg,bad){const t=$('#toast');placeToast();t.textContent=msg;t.hidden=false;t.classList.toggle('bad',!!bad);t.style.animation='none';void t.offsetWidth;t.style.animation='';toastT=2.6+msg.length*.025}
+const busyVoice=()=>frame.classList.contains('focus')||T.gus.say>0&&st()===1;
+let toastQ=[];function flushToasts(){if(toastT<=0&&toastQ.length&&!busyVoice()){const[m,b]=toastQ.shift();toast(m,b,true)}}
+let toastT=0;function toast(msg,bad,fromQ){if(!fromQ&&!bad&&(busyVoice()||toastT>.9)){if(!toastQ.some(q=>q[0]===msg)&&toastQ.length<3)toastQ.push([msg,bad]);return}const t=$('#toast');placeToast();t.textContent=msg;t.hidden=false;t.classList.toggle('bad',!!bad);t.style.animation='none';void t.offsetWidth;t.style.animation='';toastT=2.6+msg.length*.025}
 function gusSay(msg){const el=$('#gusSay');el.textContent=msg;el.hidden=false;el.style.transform='none';el.style.maxWidth=Math.round((T.gx+6)*u-$('#bClock').getBoundingClientRect().right+frame.getBoundingClientRect().left-20)+'px';el.style.left='auto';el.style.right=Math.round((W-(T.gx+6))*u)+'px';el.style.top='auto';el.style.bottom=Math.round((H-(T.gy-4))*u)+'px';T.gus.say=3.2}
 function vibrate(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 function addCoins(n){const from=S.coins;S.coins+=n;const el=$('#tCoins');let k=0;const step=()=>{k=Math.min(1,k+.08);el.textContent=Math.round(lerp(from,S.coins,k));if(k<1)requestAnimationFrame(step)};step()}
 function refreshHUD(){$('#tDay').textContent=dow(S.day)+' · '+hhmm(S.min);$('#tCoins').textContent=S.coins;const avg=S.sat.length?S.sat.reduce((a,b)=>a+b,0)/S.sat.length:2;const st=clamp(Math.round(1+avg*1.34),1,5);$('#cRep').innerHTML='★'.repeat(st)+'<i>'+'★'.repeat(5-st)+'</i>'}
 let lastHint='';
 function refreshHints(){const el=$('#vitHint');const waiting=V.cl&&V.cl.state==='wait';let txt='',go=false;
-  if(S.prep){const n=S.vitrina.length,q=S.queue.length;if(isSunday()){txt=S.day===1?(n<PREP_N?'Domingo · prepara '+PREP_N+' pociones para el lunes <span class="arr">▶</span>':'Vitrina · '+n+'/6 · lista para el lunes'):'Domingo · cerrado por edicto · taller sin prisa';go=S.day===1&&n<PREP_N}
-    else{txt=q?'⚠ '+q+(q===1?' persona espera':' personas esperan')+' fuera y se impacientan':'Persiana bajada · la cola empieza a las 8:00';go=false}}
-  else if(S.open&&!V.cl&&!S.queue.length&&!V.closing){txt=S.arr.length?'Nadie en la cola · el próximo llega pronto':'Ya no esperamos a nadie más hoy';go=false}
-  else if(S.started){if(!S.vitrina.length){txt=waiting?'Vitrina vacía · prepara la poción en el Taller <span class="arr">▶</span>':'Vitrina vacía';go=!!waiting}else if(waiting)txt=V.sel<0?'Toca una poción o arrástrala hasta '+V.cl.def.name:'Pulsa SERVIR o arrastra el frasco hasta '+V.cl.def.name;else txt='Vitrina · '+S.vitrina.length+'/6'}
+  if(S.prep){const n=S.vitrina.length,q=S.queue.length;if(isSunday()){txt=S.day===1&&n<PREP_N?'Prepara '+PREP_N+' pociones para el lunes <span class="arr">▶</span>':'';go=!!txt}
+    else{txt=q?'⚠ '+q+(q===1?' espera fuera':' esperan fuera'):'La cola empieza a las 8:00';go=false}}
+  else if(S.open&&!V.cl&&!S.queue.length&&!V.closing){txt=S.arr.length?'El próximo llega pronto':'';go=false}
+  else if(S.started){const learn=S.day<=2&&S.served<2;if(!S.vitrina.length){txt=waiting?'Vitrina vacía <span class="arr">▶</span> Taller':'';go=!!waiting}else if(waiting&&learn)txt=V.sel<0?'Toca una poción o arrástrala hasta '+V.cl.def.name:'Pulsa SERVIR o arrastra el frasco';else txt=''}
   const key=txt+go;if(key!==lastHint){lastHint=key;el.innerHTML=txt;el.hidden=!txt;el.classList.toggle('go',go)}
   const ch=$('#vitChip');const k2=S.vitrina.length+'|'+(waiting?1:0)+(S.prep?'p':'');if(ch._k!==k2){ch._k=k2;ch.innerHTML='<img class="pximg" src="'+ICON.vial+'" alt="">Vitrina <b>'+(S.prep?Math.min(S.vitrina.length,PREP_N)+'/'+PREP_N+'</b> para abrir':S.vitrina.length+'/6</b>')+(waiting&&S.vitrina.length?' · servir ▶':' ▶')}}
 function refreshPotInfo(){const el=$('#potInfo');const p=S.vitrina[V.sel];const serve=$('#stS');serve.disabled=!p;serve.classList.toggle('ready',!!p&&!!V.cl);if(!p){el.hidden=true;return}el.hidden=false;const name=S.known.has(p.eff)?EFN[p.eff]:'Poción desconocida';el.innerHTML='<em>'+name+'</em> · '+TIERS[p.tier]+(p.sec&&!p.distilled&&S.known.has(p.eff)?' · + '+SEC[p.sec]:'')+' · '+'★'.repeat(p.q)}
-function refreshPredict(){const el=$('#predict');const an=potAn();el.classList.remove('warn');const P=T.pot;
-  if(!P.mode){el.innerHTML='Elige la base<small>Agua potencia · Aguardiente suprime · Vino transforma</small>';return}
-  if(!P.items.length){el.innerHTML=MODES[P.mode].n+' en el caldero<small>Toca un tarro del estante para añadir un ingrediente</small>';return}
-  const q='<span id="qual">'+'★'.repeat(qualOf(T.stir))+'☆'.repeat(3-qualOf(T.stir))+'</span>',tv=P.turns+(P.turns===1?' vuelta':' vueltas');
+function refreshPredict(){const el=$('#predict');const an=potAn();el.classList.remove('warn');const P=T.pot;const show=h=>{el.style.display=h?'':'none';if(h)el.innerHTML=h};
+  // las indicaciones solo hasta la primera poción; después, el caldero habla por sí mismo
+  const teach=!S.flags.brewed;
+  if(!P.mode)return show(teach&&'Elige la base<small>Agua potencia · Aguardiente suprime · Vino transforma</small>');
+  if(!P.items.length)return show(teach&&'Echa un ingrediente<small>Toca un tarro del estante</small>');
   const sum=ORD.reduce((a,k)=>a+T.raw[k],0);
-  if(!sum){el.innerHTML='Todavía no ha soltado nada<small>Ponlo al fuego: cada vez que se acaba la arena, suelta un poco</small>';return}
+  if(!sum)return show(teach&&'Ponlo al fuego');
   if(an.tier===3)el.classList.add('warn');
-  if(an.eff==='placebo'){el.innerHTML='Turbio y sin color · las esencias se anulan<small>'+q+' · '+tv+'</small>';return}
-  const known=S.known.has(an.eff);
-  if(S.aero){const name=known?EFN[an.eff]:'???';const sec=an.sec?(known?' · + '+SEC[an.sec]:' · + ¿?'):'';el.innerHTML='→ '+name+' · '+TIERS[an.tier]+(an.tier===3?' ⚠':'')+sec+'<small>'+q+' · '+tv+' · remueve en círculos</small>';return}
-  const look=COLW[an.dom].charAt(0).toUpperCase()+COLW[an.dom].slice(1)+[' pálido','',' intenso',' a borbotones'][an.tier]+(an.sec?' · vapor '+COLW[an.sec]:'');
-  el.innerHTML=look+(known?' · huele a '+EFN[an.eff]:'')+(an.tier===3?' ⚠':'')+'<small>'+q+' · '+tv+' · el color es la esencia; el vapor, la segunda</small>'}
+  const known=S.known.has(an.eff)&&an.eff!=='placebo';
+  if(S.aero){const name=known?EFN[an.eff]:'???';const sec=an.sec?(known?' · + '+SEC[an.sec]:' · + ¿?'):'';return show('→ '+(an.eff==='placebo'?'Agua con mucha fe':name+' · '+TIERS[an.tier]+(an.tier===3?' ⚠':'')+sec)+'<small>'+'★'.repeat(qualOf(T.stir))+'☆'.repeat(3-qualOf(T.stir))+'</small>')}
+  // a ojo: solo lo que no se ve (el olor de algo que ya conoces)
+  return show(known&&'Huele a '+EFN[an.eff]+(an.tier===3?' ⚠':''))}
 function smellLine(){const an=T.an||potAn();if(!an.dom)return pick(['Todavía no huele a nada, jefe.','Huele a agua caliente. Emocionante.']);
   const known=an.eff&&an.eff!=='placebo'&&S.known.has(an.eff);const tw=['. Flojito','','. Fuerte','. Tira para atrás'][an.tier];
   return'Huele a '+(known?EFN[an.eff]:SMELL[an.dom])+tw+(an.sec?'. Y un poco a '+SMELL[an.sec]+'.':'.')}
@@ -2259,13 +2264,13 @@ let clockK='';function updClockBtn(){const b=$('#bClock');if(!b)return;const P=T
 // ── tratamientos: elegir y hacer el gesto ──
 const PR={on:false};
 function openTreat(id,el){if(T.busy||T.bottling||st()!==1)return;if(!T.pot.mode){toast('Primero la base: Agua, Aguardiente o Vino.',true);document.querySelectorAll('.mode').forEach(b=>{b.classList.remove('flashm');void b.offsetWidth;b.classList.add('flashm')});return}
-  const tr=$('#treat');tr._id=id;tr._el=el;$('#treatN').textContent=ING[id].n+': ¿cómo lo echas?';const f=frame.getBoundingClientRect(),d=$('#tCtrl').getBoundingClientRect();tr.style.bottom=Math.round(f.bottom-d.top+10)+'px';tr.hidden=false;frame.classList.add('treating');AU.tone(520,.06,'triangle',.04)}
+  const tr=$('#treat');tr._id=id;tr._el=el;S.flags.treatSeen=(S.flags.treatSeen||0)+1;tr.querySelector('small').hidden=S.flags.treatSeen>2;$('#treatN').textContent=ING[id].n+': ¿cómo lo echas?';const f=frame.getBoundingClientRect(),d=$('#tCtrl').getBoundingClientRect();tr.style.bottom=Math.round(f.bottom-d.top+10)+'px';tr.hidden=false;frame.classList.add('treating');AU.tone(520,.06,'triangle',.04)}
 function beginTreat(t,id,el){Object.assign(PR,{on:true,t,id,el,taps:0,acc:0,lastA:null,heat:0,hold:false,drag:false,chop:0,ang:0,fin:false});const pv=$('#prep');
   $('#prepT').textContent={troceado:'Trocear',molido:'Moler en el mortero',tostado:'Tostar al fuego'}[t]+' · '+ING[id].n;
   $('#prepH').textContent={troceado:'Toca tres veces para cortarlo.',molido:'Frota en círculos hasta que quede polvo.',tostado:'Mantén pulsado y suelta en la franja verde. Si te pasas, se quema.'}[t];
   pv.querySelector('.zone').hidden=t!=='tostado';const fr=frame.getBoundingClientRect(),ct=$('#tCtrl').getBoundingClientRect();pv.style.top='auto';pv.style.bottom=Math.round(fr.bottom-ct.top+10)+'px';pv.hidden=false;frame.classList.add('prepping');$('#prepBar').style.width='0'}
 function endPrep(res){if(!PR.on)return;PR.on=false;$('#prep').hidden=true;frame.classList.remove('prepping');if(res==='cancel')return;const{id,el,t}=PR;
-  if(t==='tostado'){if(res==='poco'){toast('Poco tostado: se echa como entero.');T.throwIng(id,el,'entero')}else if(res==='quemado'){toast('¡Se ha quemado! Pierde fuerza y la poción saldrá peor.',true);T.throwIng(id,el,'tostado',true)}else{toast('Tostado justo: pierde su esencia menor.');T.throwIng(id,el,'tostado')}return}
+  if(t==='tostado'){if(res==='poco'){toast('Poco tostado: se echa como entero.');T.throwIng(id,el,'entero')}else if(res==='quemado'){toast('¡Se ha quemado!',true);T.throwIng(id,el,'tostado',true)}else{T.throwIng(id,el,'tostado')}return}
   T.throwIng(id,el,t)}
 function prepTick(dt){if(!PR.on)return;const g=$('#prepC').getContext('2d');g.imageSmoothingEnabled=false;const t=clock,spr=INGSPR[PR.id];const E0=ING[PR.id].e,main=Object.keys(E0).sort((a,b)=>E0[b]-E0[a])[0];
   R(g,0,0,120,72,'#2a1c22');let prog=0;
@@ -2296,11 +2301,11 @@ function showCard(p,opts={}){const ov=$('#ovCard');const known=S.known.has(p.eff
   const d=$('#cDist');if(d)d.onclick=()=>{ov.hidden=true;distill(p)};
   const gb=$('#cGus');if(gb)gb.onclick=()=>{ov.hidden=true;gusTest(p)};
   const sv=$('#cServe');if(sv)sv.onclick=()=>{if(6-S.vitrina.length<=0){toast('La vitrina está llena',true);return}const cl=storeBatch(p,Math.min(p.n,6-S.vitrina.length));ov.hidden=true;navTo(0);later(1,()=>{const i=S.vitrina.indexOf(cl[0]);if(i>=0&&V.cl&&V.cl.state==='wait'){V.sel=i;refreshPotInfo();V.act('serve')}})};
-  const vb=$('#cVit');if(vb)vb.onclick=()=>{const fr=6-S.vitrina.length;if(fr<=0){toast('La vitrina está llena',true);return}const n0=p.n,k2=Math.min(n0,fr);storeBatch(p,k2);ov.hidden=true;AU.tone(880,.15,'triangle',.08);toast(k2<n0?'Guardados '+k2+'. Los otros '+(n0-k2)+' no caben y se tiran.':'Guardado'+(k2>1?'s '+k2+' frascos':'')+' en la vitrina ('+S.vitrina.length+'/6), bajo el mostrador de la Ventanilla.')}}
+  const vb=$('#cVit');if(vb)vb.onclick=()=>{const fr=6-S.vitrina.length;if(fr<=0){toast('La vitrina está llena',true);return}const n0=p.n,k2=Math.min(n0,fr);storeBatch(p,k2);ov.hidden=true;AU.tone(880,.15,'triangle',.08);toast(k2<n0?'A la vitrina: '+k2+'. Los otros '+(n0-k2)+' no caben.':'A la vitrina: '+k2+' ('+S.vitrina.length+'/6).')}}
 function distill(p){if(S.alem<=0||p.tier<=0)return;S.alem--;p.tier--;const a=T.alem;AU.noise(1.2,.12,800,2400,.5);for(let i=0;i<18;i++)later(i*.06,()=>{part(T.parts,{k:'px',x:a.x+24,y:a.y+18,vy:20,g:40,life:.4,max:.4,c:p.color,front:1});part(T.parts,{k:'glow',x:a.x+6,y:a.y+16,life:.3,max:.3,r:8,c:p.color,a:.6})});later(1.2,()=>{p.distilled=true;p.spr=bottleSprite(p);p.spr2=null;AU.magic();showCard(p)})}
 function gusTest(p){if(S.gus<=0||(p.n??1)<=0)return;S.gus--;p.n=(p.n??1)-1;const gs=T.gus;const from={x:T.cx,y:T.probeTop+T.th*.5},to={x:T.gx+14,y:T.gy+16};
   part(T.parts,{k:'spirit',c:p.color,c2:mix(p.color,'#ffffff',.5),tr:[],x:from.x,y:from.y,life:9,max:9,path:[from.x,from.y,(from.x+to.x)/2,from.y-30,to.x,to.y],dur:.5,front:1,done:()=>{gs.drink=1;AU.gulp();later(.5,()=>{gs.drink=0;AU.poof();shake=Math.max(shake,2);for(let i=0;i<20;i++)part(T.parts,{k:'smoke',x:T.gx+14+rnd(-10,10),y:T.gy+rnd(0,28),vx:rnd(-20,20),vy:rnd(-20,4),life:.9,max:.9,r:rnd(2,5),c:pick([p.color,'#ffffff'])});gs.mods=modsFor(p);gs.modT=4.5;const isNew=!S.known.has(p.eff);S.known.add(p.eff);
-    if(p.proc&&p.eff&&p.eff!=='placebo'&&!S.recipes.some(r=>r.base===p.proc.base&&r.turns===p.proc.turns&&sameSteps(r.steps,p.proc.steps))){S.recipes.push({name:EFN[p.eff],eff:p.eff,base:p.proc.base,steps:p.proc.steps,turns:p.proc.turns,by:'tú'});later(3.4,()=>toast('Apuntada en tu recetario: '+EFN[p.eff]+'. Está en el libro.'))}gusSay(GUS_LINES[p.eff]||'…');later(2.4,()=>{if(isNew)AU.discover();showCard(p,{isNew})})})}})}
+    if(p.proc&&p.eff&&p.eff!=='placebo'&&!S.recipes.some(r=>r.base===p.proc.base&&r.turns===p.proc.turns&&sameSteps(r.steps,p.proc.steps))){S.recipes.push({name:EFN[p.eff],eff:p.eff,base:p.proc.base,steps:p.proc.steps,turns:p.proc.turns,by:'tú'});later(3.4,()=>toast('Apuntada en tu recetario: '+EFN[p.eff]+'.'))}gusSay(GUS_LINES[p.eff]||'…');later(2.4,()=>{if(isNew)AU.discover();showCard(p,{isNew})})})}})}
 
 // ── edicto ──
 function sealCanvas(){const[c,g]=mk(24,24);SE(g,12,12,11,11,['#6a0f1f','#9a2030','#c8323c','#ff6a6a']);for(let a=0;a<TAU;a+=.4)P(g,12+Math.cos(a)*11,12+Math.sin(a)*11,'#6a0f1f');E(g,12,12,6,6,'#8a1f34');R(g,9,8,6,6,'#c8323c');R(g,10,14,4,2,'#c8323c');R(g,11,6,2,2,'#ff6a6a');return outline(c)}
@@ -2339,12 +2344,12 @@ const TUT=[
   {t:'Primero, la base. El Agua potencia lo que eches: tócala.',el:()=>$('.mode[data-m="her"]'),done:()=>!!T.pot.mode},
   {t:'Ahora toca la Guindilla de dragón y échala entera.',el:()=>treatOr('entero','guindilla'),done:()=>T.pot.items.some(i=>i.id==='guindilla'),need:()=>!!T.pot.mode||potBusy(),back:1},
   {t:'Ponlo al fuego. Cada vez que se acaba la arena del reloj es una vuelta, y lo entero suelta un poco de sus esencias.',el:()=>T.fire?null:$('#bClock'),done:()=>T.pot.turns>=1,need:potBusy,back:1},
-  {t:'¿Ves cómo se tiñe de rojo? Rojo es Fuego. El vapor dice la segunda esencia. Más vueltas, más fuerza; si te pasas, ¡bum!',info:6,need:potBusy,back:1},
-  {t:()=>T.fire&&T.pot.turns>=2?'Atento a la arena: retíralo del fuego justo cuando se acabe la tercera vuelta.':'Tres vueltas, removiendo en círculos mientras hierve. Luego, retíralo del fuego justo cuando se acabe la arena.',ring:1,el:()=>!T.fire&&T.pot.turns<3?$('#bClock'):T.fire&&T.pot.turns>=2&&T.boilT/TURN>.6?$('#bClock'):null,done:()=>(T.pot.turns>=3&&!T.fire&&qualOf(T.stir)>=2)||!!T.bottling,need:potBusy,back:1},
+  {t:'Rojo es Fuego; el vapor, la segunda esencia. Más vueltas, más fuerza. Si te pasas, ¡bum!',info:5,need:potBusy,back:1},
+  {t:()=>T.fire&&T.pot.turns>=2?'¡Atento! Retíralo cuando se acabe la arena.':T.fire?'Remueve en círculos. Vamos a tres vueltas.':'Tres vueltas, removiendo. Retíralo justo cuando se acabe la arena.',ring:1,el:()=>!T.fire&&T.pot.turns<3?$('#bClock'):T.fire&&T.pot.turns>=2&&T.boilT/TURN>.6?$('#bClock'):null,done:()=>(T.pot.turns>=3&&!T.fire&&qualOf(T.stir)>=2)||!!T.bottling,need:potBusy,back:1},
   {t:'¡Eso es! Ahora, Embotellar.',el:()=>$('#bBottle'),done:cardOpen,need:potBusy,back:1},
   {t:'De cada preparación salen tres frascos. Guárdalos en la vitrina.',el:()=>$('#cVit'),done:()=>S.vitrina.length>=3},
   {t:'Otra, con la receta de Remedios «Para que callen» (está en el libro): Aguardiente y Susurro embotellado molido en el mortero.',el:()=>T.pot.mode!=='con'&&!T.pot.items.length?$('.mode[data-m="con"]'):treatOr('molido','susurro'),done:()=>T.pot.mode==='con'&&T.pot.items.some(i=>i.id==='susurro'&&i.t==='molido')},
-  {t:'Molido, lo suelta todo de golpe. Al fuego una vuelta, retíralo cuando se acabe la arena, remueve y embotella.',ring:1,el:()=>T.fire?(T.boilT/TURN>.6?$('#bClock'):null):T.pot.turns<1?$('#bClock'):$('#bBottle'),done:cardOpen,need:potBusy,back:8},
+  {t:()=>T.fire?'Remueve y retíralo cuando se acabe la arena.':'Molido, lo suelta todo de golpe. Una vuelta al fuego y embotella.',ring:1,el:()=>T.fire?(T.boilT/TURN>.6?$('#bClock'):null):T.pot.turns<1?$('#bClock'):$('#bBottle'),done:cardOpen,need:potBusy,back:8},
   {t:'¿Y esto qué hace? Ni idea. Para eso estoy yo: pruébalo en mí. Cobro en sustos.',el:()=>$('#cGus'),done:()=>S.gus<tut.gus0,skip:()=>S.gus<=0},
   {t:()=>T.gus.modT>0||cardOpen()?(S.known.has('silencio')?'Silencio. Justo lo que piden algunos para sus suegras. Guarda el resto.':'Ya sabemos qué hace. Guarda el resto en la vitrina.'):'Un momento, que me hace efecto…',el:()=>$('#cVit'),done:()=>S.vitrina.length>=PREP_N},
   {t:'Hay género para mañana. Los domingos no se abre: vuelve a la Ventanilla y vete a dormir.',el:()=>st()===0?$('#bNext'):navBtn(0),done:()=>S.day>1},
@@ -2369,10 +2374,10 @@ function startPrep(){S.prep=true;S.min=300;S.open=false;V.shutter=V.shutterTo=.5
   ov.innerHTML='<div class="letter paper"><h2>Una carta en el mostrador</h2><p>A quien herede esta botica:</p><p>Si lees esto, me he jubilado. O me ha jubilado el Gremio, que viene a ser lo mismo pero con más sellos.</p><p>La botica es tuya. Las deudas también, pero esas llegan en otra carta.</p><p>No subas la persiana con la vitrina vacía: en Vialix la gente no espera, se queja por escrito y con copia.</p><p>Gus te enseñará el oficio. No le pagues, le ofende.</p><div class="sig">Con cariño y sin garantías,<br>Remedios, boticaria retirada (a la fuerza)</div><button class="btn gold big" id="lGo">Bajar al taller con Gus</button><button class="skip" id="lSkip">Ya conozco el oficio</button></div>';
   ov.hidden=false;AU.paper();
   $('#lGo').onclick=()=>{ov.hidden=true;AU.paper();tutGo(0)};
-  $('#lSkip').onclick=()=>{ov.hidden=true;tut.i=null;toast('Prepara al menos '+PREP_N+' pociones en el Taller antes de subir la persiana.')}}
+  $('#lSkip').onclick=()=>{ov.hidden=true;tut.i=null;toast('Para el lunes necesitas '+PREP_N+' pociones en la vitrina.')}}
 function openShop(){if(isSunday())return;
   S.prep=false;S.open=true;V.shutterTo=0;$('#vNext').hidden=true;const b=$('#bNext');b._k='';b.classList.add('gold');b.classList.remove('glowy');$('#vClosed').hidden=true;AU.noise(1.1,.22,300,900,.6,'lowpass');later(.5,()=>AU.bell());vibrate(25);V.setQueue();lastHint='';
-  if(S.queue.length)later(1.3,()=>V.callNext());else toast('Abierto. Todavía no ha llegado nadie.')}
+  if(S.queue.length)later(1.3,()=>V.callNext());else toast('Abierto.')}
 function prepUI(){const show=S.prep&&st()===0&&!V.closing;const vn=$('#vNext'),b=$('#bNext');if(!S.prep)return;vn.hidden=!show;
   const sun=isSunday(),n=S.vitrina.length,need=sun&&S.day===1&&n<PREP_N,k='p'+sun+need+Math.min(n,PREP_N);
   if(b._k!==k){b._k=k;b.innerHTML=sun?(need?'<img class="pximg" src="'+ICON.vial+'" alt="">Faltan '+(PREP_N-n)+' pociones para mañana':'<img class="pximg" src="'+ICON.moon+'" alt="">Dormir hasta el lunes'):'<img class="pximg" src="'+ICON.win+'" alt="">Subir la persiana y abrir';b.classList.toggle('gold',!need);b.classList.toggle('glowy',!need&&S.day<=2);
@@ -2412,12 +2417,12 @@ function planNextDay(dry){if(dow(S.day+1)==='Domingo')return[];if(S.day===1)retu
 function newDay(){const q=planNextDay();S.day++;S.queue=[];S.qpat={};S.arr=isSunday()?[]:schedule(q);S.min=300;S.open=false;S.prep=true;S.closeSoon=false;if(!isSunday()&&S.day>2){S.returning=new Set(S.libreta);S.libreta=[]}S.total=q.length;S.served=0;S.dayT=0;S.log=[];S.gus=3;S.alem=2;S.exploded=false;S.flags.gusSoot=false;S.carry=S.carryNext.slice(-6);S.carryNext=[];S.edict=EDICTS[Math.max(0,S.day-2)%EDICTS.length];S.edictNew=true;setWeather(weatherFor(S.day),true);if(S.flags.horns&&q.includes('mantecas2'))S.flags.hornsDone=true;
   for(const id of q)if(id.startsWith('gen')&&!S.gens[id]){const r=mulberry(id.length*31+parseInt(id.slice(3)));const tpl=GEN_REQ[(r()*GEN_REQ.length)|0];const sp=genSpec(parseInt(id.slice(3))*7+3);S.gens[id]=Object.assign({id,gen:1,name:GEN_NAMES[(r()*GEN_NAMES.length)|0],spec:sp,key:id,small:{skin:sp.skin,hair:sp.hair,cloth:sp.cloth,hat:'none'},drinks:true,secPref:r()<.5?'hate':(r()<.3?'like':null),urgent:r()<.3,miss:'Esto no es lo que pedí. Pero gracias por intentarlo. O no.',apunta:'Vuelvo mañana, entonces.',rechazo:'Pues nada. Me iré a llorar a la fuente.',wait:'Sigo esperando, ¿eh?',back:'He vuelto. ¿Tiene lo mío?'},tpl)}
   V.closing=false;V.shutter=V.shutterTo=.58;V.walkers=[];V.queueFig=[];V.setQueue(true);lastMin=-1;for(let i=0;i<5;i++){V.spawnWalker();const w=V.walkers[V.walkers.length-1];w.x=V.o.x+rnd(V.o.w)}refreshHUD();$('#vNext').hidden=true;
-  if(isSunday())later(.6,()=>toast('Domingo: la tienda no abre por edicto. Taller sin prisa.'));else later(.4,()=>showEdict('dia'))}
+  if(isSunday())later(.6,()=>toast('Domingo: hoy no se abre.'));else later(.4,()=>showEdict('dia'))}
 
 // ───────────────────────── hollín tras la explosión ─────────────────────────
 let soot=null;
 function showSoot(){const c=$('#soot');c.width=Math.round(cssW/2);c.height=Math.round(cssH/2);c.style.width=cssW+'px';c.style.height=cssH+'px';const g=c.getContext('2d');g.fillStyle='rgba(20,14,22,.0)';g.clearRect(0,0,c.width,c.height);for(let i=0;i<70;i++){const x=rnd(c.width),y=rnd(c.height),r=rnd(18,60);const gr=g.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,'rgba(18,12,20,.95)');gr.addColorStop(.7,'rgba(26,18,26,.8)');gr.addColorStop(1,'rgba(26,18,26,0)');g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,TAU);g.fill()}c.hidden=false;$('#sootHint').hidden=false;soot={c,g,t:0,strokes:0}}
-function sootWipe(x,y){if(!soot)return;const g=soot.g;g.globalCompositeOperation='destination-out';g.beginPath();g.arc(x/2,y/2,22,0,TAU);g.fill();g.globalCompositeOperation='source-over';soot.strokes++;if(soot.strokes%10===0){const d=g.getImageData(0,0,soot.c.width,soot.c.height).data;let n=0,tot=0;for(let i=3;i<d.length;i+=64){tot++;if(d[i]>60)n++}if(n/tot<.12)endSoot()}}
+function sootWipe(x,y){if(!soot)return;const g=soot.g;g.globalCompositeOperation='destination-out';g.fillStyle='#000';g.beginPath();g.arc(x/2,y/2,22,0,TAU);g.fill();g.globalCompositeOperation='source-over';soot.strokes++;if(soot.strokes%10===0){const d=g.getImageData(0,0,soot.c.width,soot.c.height).data;let n=0,tot=0;for(let i=3;i<d.length;i+=64){tot++;if(d[i]>60)n++}if(n/tot<.2)endSoot()}}
 function endSoot(){if(!soot)return;const c=soot.c;soot=null;c.style.transition='opacity .5s';c.style.opacity='0';$('#sootHint').hidden=true;setTimeout(()=>{c.hidden=true;c.style.opacity='';c.style.transition=''},500)}
 $('#soot').addEventListener('pointerdown',e=>{e.preventDefault();const r=frame.getBoundingClientRect();sootWipe(e.clientX-r.left,e.clientY-r.top);soot&&(soot.down=1)});
 $('#soot').addEventListener('pointermove',e=>{if(!soot||!soot.down)return;const r=frame.getBoundingClientRect();sootWipe(e.clientX-r.left,e.clientY-r.top)});
@@ -2453,9 +2458,9 @@ $('#prepX').onclick=()=>endPrep('cancel');
   const up=()=>{if(!PR.on)return;PR.drag=false;if(PR.t==='tostado'&&PR.hold&&!PR.fin){PR.hold=false;PR.fin=true;endPrep(PR.heat<.55?'poco':PR.heat<=.8?'ok':'quemado')}};
   c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up)})();
 $('#bClock').onclick=()=>{AU.init();$('#treat').hidden=true;T.toggleFire()};
-$('#bAero').onclick=()=>{S.aero=true;$('#bAero').hidden=true;AU.coin(0);toast('Aerómetro comprado (en el mockup, gratis): las probetas muestran las esencias con cifras.');refreshPredict()};
+$('#bAero').onclick=()=>{S.aero=true;$('#bAero').hidden=true;AU.coin(0);toast('Aerómetro comprado.');refreshPredict()};
 $('#bCodex').onclick=()=>showCodex();
-$('#bArt').onclick=()=>{setArt(ART==='lucas'?'actual':'lucas');toast(ART==='lucas'?'Estilo LucasArts (prueba v0.9): paleta corta y fondo suave.':'Estilo anterior, para comparar.')};
+$('#bArt').onclick=()=>{setArt(ART==='lucas'?'actual':'lucas');toast(ART==='lucas'?'Estilo LucasArts':'Estilo anterior')};
 $('#waitBadge').onclick=()=>navTo(0);
 $('#vitChip').onclick=()=>navTo(0);
 $('#vitHint').onclick=()=>{if($('#vitHint').classList.contains('go'))navTo(1)};
@@ -2473,12 +2478,13 @@ function update(dt){
   for(let i=timers.length-1;i>=0;i--){timers[i].t-=dt;if(timers[i].t<=0){const f=timers[i].fn;timers.splice(i,1);f()}}
   if(cam.t<1&&!cam.drag){cam.t=Math.min(1,cam.t+dt/cam.dur);cam.x=lerp(cam.from,cam.to,easeIO(cam.t))}
   dayTick(dt);refreshHints();prepUI();dayUI();tutTick(dt);
+  const foc=T.fire||PR.on;if(frame.classList.contains('focus')!==foc){frame.classList.toggle('focus',foc);if(!foc)later(.5,flushToasts)}
   V.update(dt);T.update(dt);prepTick(dt);frame.classList.toggle('treating',!$('#treat').hidden);D.update(dt);PD.update(dt);updSay(dt);
   if(V.bellT>0)V.bellT-=dt;
-  if(toastT>0){toastT-=dt;if(toastT<=0)$('#toast').hidden=true}
+  if(toastT>0){toastT-=dt;if(toastT<=0){$('#toast').hidden=true;later(.25,flushToasts)}}
   shake=Math.max(0,shake-dt*30);flash=Math.max(0,flash-dt*3);
   // aviso en el taller si hay alguien esperando
-  const wb=$('#waitBadge');const waiting=V.cl&&V.cl.state==='wait';if(waiting&&st()!==0){wb.hidden=false;const f=V.cl.pat/V.cl.patMax,imp=f<.25?' · ¡se va!':f<.5?' · se impacienta':'';wb.innerHTML='<img class="pximg" src="'+ICON.bell+'" alt="">'+V.cl.def.name+' espera en la ventanilla'+imp}else if(S.prep&&!isSunday()&&S.queue.length&&st()!==0){wb.hidden=false;wb.innerHTML='<img class="pximg" src="'+ICON.bell+'" alt="">'+S.queue.length+' esperan fuera · la tienda está cerrada'}else wb.hidden=true;
+  const wb=$('#waitBadge');const waiting=V.cl&&V.cl.state==='wait';if(waiting&&st()!==0){wb.hidden=false;const f=clamp(V.cl.pat/V.cl.patMax,0,1),k='w'+V.cl.id+Math.round(f*20);if(wb._k!==k){wb._k=k;wb.innerHTML='<img class="pximg" src="'+ICON.bell+'" alt="">'+V.cl.def.name+' espera<span class="pb"><i style="width:'+Math.round(f*100)+'%;background:'+(f>.5?'#6cc06a':f>.25?'#e8c060':'#d8434e')+'"></i></span>'}}else if(S.prep&&!isSunday()&&S.queue.length&&st()!==0){wb.hidden=false;wb._k='';wb.innerHTML='<img class="pximg" src="'+ICON.bell+'" alt="">'+S.queue.length+' esperan fuera · la tienda está cerrada'}else wb.hidden=true;
   const tb=$('#tBadge');if(V.cl&&V.cl.state==='wait'&&st()===0&&!S.vitrina.length){tb.hidden=false;tb.textContent='!'}else tb.hidden=true;
 }
 function render(){
