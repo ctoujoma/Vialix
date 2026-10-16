@@ -33,6 +33,8 @@ El arte tiene **unos 180–215 px de ancho** y se escala siempre a múltiplos en
 
 ### 2.1 HUD superior (común)
 Día y día de la semana · monedas · reputación en este pueblo · sonido. Más adelante, los días hasta el alquiler.
+- **Esperar:** el reloj del día es un botón. Al tocarlo el tiempo corre diez veces más deprisa y el sol se cambia por ⏩. Se para solo cuando llega alguien a la cola o a la ventanilla, al abrir, o si hay algo que hacer antes (no deja saltarse el domingo del tutorial). Un cartel sobre la vitrina lo ofrece cuando no hay nada que hacer: «Esperar a la cola» antes de abrir y «Esperar al siguiente» con la tienda abierta y vacía.
+- En pantallas estrechas el día va abreviado («Lun · 8:07»).
 
 ### 2.2 Ventanilla
 ```
@@ -48,7 +50,7 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 │        ┌──────────┐              │
 │        │ CLIENTE  │              │ cliente a medio cuerpo
 │ 📕 ════╧══════════╧═══ 🪙  🔔 ═══ │ mostrador: libreta, monedas, campanilla
-│   🧪  🧪  ·   ·   ·   ·          │ vitrina (6 huecos)
+│   🧪  🧪  ·   ·   ·   ·          │ vitrina (6 huecos × 3 frascos)
 │  [RECHAZAR] [APUNTAR] [SERVIR]   │ sellos de caucho
 │  Ventanilla    Taller   Mercado  │ pestañas
 └──────────────────────────────────┘
@@ -61,21 +63,21 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 - **El cliente** a medio cuerpo, con parpadeo y boca al hablar. Llega y se va deslizándose con pasos. Ignatius no cabe: asoma la cabeza, y su llegada hace temblar la pantalla.
 - **El bocadillo** está arriba, con el texto letra a letra (un toque lo completa).
 - **Mostrador:** libreta (abre los encargos), cuenco de monedas (crece con la caja), campanilla (llama al siguiente) y el edicto clavado en el marco (se abre al tocarlo).
-- **Vitrina:** 6 huecos bajo el mostrador, con frascos grandes que brillan con su color y huecos vacíos visibles. Un cartel sobre ella dice qué hacer: «Vitrina vacía · prepara la poción en el Taller ▶» (se toca para ir), «Toca una poción o arrástrala hasta…» o «Pulsa SERVIR…».
+- **Vitrina:** 6 huecos bajo el mostrador, y en cada hueco hasta 3 frascos iguales (18 en total). El de delante brilla con su color; los de detrás asoman en penumbra. Al servir sale el de delante. Los huecos vacíos se ven. Un cartel sobre ella dice qué hacer: «Vitrina vacía · prepara la poción en el Taller ▶» (se toca para ir), «Toca una poción o arrástrala hasta…» o «Pulsa SERVIR…».
 - **Servir:** se arrastra el frasco hasta el cliente (se ilumina al pasar por encima), o se toca el frasco y luego el sello Servir. Desde el taller, si hay alguien esperando, la tarjeta de la poción ofrece **«Servir a…»**: la cámara gira sola y el frasco vuela al cliente.
 - **Sellos de caucho:** Rechazar, Apuntar y Servir. Al pulsar, el sello golpea con salpicadura de tinta y sonido. Servir se ilumina cuando hay una poción elegida.
 - **Penumbra interior** con la luz del farol, y un haz de sol que entra por la ventanilla con motas de polvo.
 
-### 2.3 Taller (mockup v0.10)
+### 2.3 Taller (mockup v0.12)
 
 ```
 ┌──────────────────────────────────┐
 │ HUD    🔔 Sra. Pellejo espera…   │ aviso si hay alguien en la ventanilla
 │ ◯ ventana    [licencia]  Vitrina │
-│        ┌ paño ─────────┐         │ aerómetro tapado hasta comprarlo
-│        │ [Aerómetro ·  │         │ (con él: 5 probetas con cifras)
-│        │   comprar]    │         │
-│   [Rojo intenso · vapor magenta] │ lectura a ojo (o predicción con aerómetro)
+│        ┌ pizarra ──────┐         │ garabatos de Remedios; con el aerómetro,
+│        │  (tiza)       │         │ 5 probetas con cifras
+│        └───────────────┘         │
+│        [Huele a Valor]           │ lectura a ojo (o predicción con aerómetro)
 │ [⌛ 2 vueltas]                   │ reloj de arena
 │          ╭──────────╮       🧌   │ caldero · Gus en su taburete
 │   ⚗️     ╰──────────╯       🛢   │ alambique · barril
@@ -85,7 +87,8 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
 │  Ventanilla    Taller   Mercado  │
 └──────────────────────────────────┘
 ```
-- **Base primero:** Agua (potencia), Aguardiente (suprime) o Vino (transforma). Se vierte al caldero y lo tiñe. No se cambia con ingredientes dentro: se vacía al embotellar o al explotar.
+- **Base primero:** agua, aguardiente o vino. Se vierte al caldero y lo tiñe. Lo que hace cada una no se explica en pantalla: está en las notas de Remedios del libro («el agua da, el aguardiente quita, el vino cambia»).
+- **Vaciar el caldero:** con ingredientes dentro, tocar dos veces la base vacía el caldero (el primer toque avisa). También se vacía al embotellar o al explotar.
 - **Tratamientos:** al tocar un tarro aparece «¿cómo lo echas?» con cuatro opciones.
   - **Entero:** va directo al caldero.
   - **Troceado:** tres toques con el cuchillo.
@@ -98,12 +101,12 @@ Día y día de la semana · monedas · reputación en este pueblo · sonido. Má
   - «Retirar» lo saca del fuego. Si lo retiras justo cuando se acaba la arena, el botón dice «¡Justo!». Si lo retiras a media vuelta («A medias»), la poción pierde una estrella y no cuenta como receta seguida al pie de la letra.
 - **Animaciones:** chorro de la jarra al verter la base. El ingrediente vuela al caldero según su estado: en pedazos, como polvo de su color o tostado con humo (negro si se quemó). Al caer, el molido levanta una nube y el troceado salpica en varios sitios.
 - **Lectura a ojo:** el color del líquido es la esencia dominante, su viveza es la intensidad, y el color del vapor es la segunda esencia. No se describe con palabras: se mira. Gus comenta a qué huele al retirar el caldero, y si el efecto ya se conoce el panel dice «Huele a Valor».
-- **Aerómetro:** tapado con un paño. Al comprarlo (en el mockup, gratis) se destapan las probetas con cifras y la predicción completa.
+- **Aerómetro:** es una compra opcional, no un paso obligado. Lo vende el vidriero ambulante del mercado (40 monedas). Sin él, en la pared hay una pizarra con garabatos de tiza; al comprarlo aparecen las probetas con cifras y la predicción completa.
 - **Remover:** igual que antes, sube la calidad. Quemar un ingrediente la baja, y seguir una receta al pie de la letra la sube.
 - **Lote:** cada preparación da 3 frascos.
-  - La tarjeta ofrece guardarlos (los que quepan), servir uno al cliente que espera, probar uno en Gus o destilar el lote entero.
+  - La tarjeta dice el efecto, la fuerza (Leve, Normal, Fuerte), los frascos y el secundario, y ofrece guardarlos (los que quepan), servir uno al cliente que espera, probar uno en Gus o destilar el lote entero.
   - Si Gus prueba algo útil hecho sin receta, se apunta en tu recetario.
-- **Recetario** en el libro (códice): las recetas de Remedios (una con una mancha de tinta) y las tuyas.
+- **Recetario** en el libro (códice), como en *Kingdom Come*: un índice con las recetas de Remedios y las tuyas, y al tocar una se abre su hoja con los pasos numerados y dibujados (base, cada ingrediente con su tratamiento, las vueltas de reloj y el final). El libro solo tiene desplazamiento vertical; en pantallas anchas se abre a doble página.
 - **Igual que antes:** la vista desde arriba del caldero con su shader, la explosión con hollín, Gus y el nicho en 3D.
 
 ### 2.4 Modo foco (contrarreloj)
@@ -122,7 +125,7 @@ Mientras el caldero está al fuego o se prepara un ingrediente, la pantalla se c
 | **Amanecer: La Gaceta** | Pantalla completa | Periódico que sale de la imprenta: titular con ilustración, breves, reseñas, clasificados y horóscopo. Se pasa con un toque |
 | **Amanecer: Edicto** | Superposición | Pergamino que se despliega y sello de lacre que cae con polvo. Después se clava en la ventanilla |
 | **Libreta de encargos** | Panel (libreta) | Encargos con retrato, la frase original del cliente, plazo, recompensa y notas. Los que vencen hoy, marcados |
-| **Códice** | Panel (libro con pestañas) | Esencias · Ingredientes · Efectos (la tabla de 5 × 3 con huecos) · Secundarios · Recetas guardadas · Clientes (fichas y progreso de sus arcos) |
+| **Códice** | Panel (libro con pestañas) | Recetas (índice y una hoja por receta) · Efectos (la tabla de 5 × 3 con huecos) · Ingredientes con las notas de Remedios. Más adelante: Secundarios y Clientes (fichas y progreso de sus arcos) |
 | **Documento** | Superposición | Receta, licencia o carta en grande, para leer y comparar |
 | **Mercado** | Pantalla (escena) | Calle con puestos que se recorre deslizando. Cada mercader abre su género y su regateo. El callejón del turbio, solo algunos días |
 | **Regateo** | Superposición | Minijuego de tira y afloja con la paciencia del mercader |
@@ -150,6 +153,13 @@ Portada → [5:00 Gaceta → Edicto] → Taller ⇄ Mercado (lun-sáb; la tienda
 - **Abierta y sin cliente:** el botón llama al siguiente («Llamar al siguiente · 2 en la cola») o, si no hay nadie, permite cerrar antes. A las 20:00 el Gremio manda cerrar; si hay un cliente, se cierra en cuanto se va.
 - **Aviso de cola** antes de abrir: cuánta gente espera fuera.
 - **Domingo:** sin abrir y sin mercado; solo taller. La partida empieza en domingo.
+- **Esperar:** el botón del reloj (ver 2.1) adelanta las horas muertas.
+
+### 4.1 El domingo del tutorial
+
+- Gus se presenta primero («Soy Gus, el homúnculo de la casa…») y después propone preparar género antes de abrir.
+- Guía dos pociones: Valor (agua y Guindilla de dragón entera, tres vueltas) y «Para que callen» (aguardiente y Susurro embotellado molido, una vuelta).
+- **Si te sales del guion, Gus lo dice** con un aviso en rojo: base equivocada («Para esta receta va el agua…»), ingrediente equivocado o mal tratado. El aviso ofrece «Vaciar el caldero» para empezar otra vez. Si ya vas por delante, el tutorial te sigue.
 
 ## 5. Momentos de efecto visual («wow»)
 
@@ -181,6 +191,7 @@ Portada → [5:00 Gaceta → Edicto] → Taller ⇄ Mercado (lun-sáb; la tienda
 ## 7. Texto e idiomas
 
 - Los textos largos (bocadillos, Gaceta, códice) van en **DOM** con una fuente legible; los números y etiquetas cortas, en fuente pixel. Ambas con soporte completo de acentos y ñ.
+- Las **cifras** usan una fuente pixel aparte (los dígitos de VT323), porque en Pixelify Sans el 2, el 5 y el 8 se confundían.
 - Textos en `src/i18n/es.json` desde el principio. Las plantillas de la Gaceta y de los clientes usan marcadores (`{cliente}`, `{efecto}`) y concordancia de género y número.
 - Tamaño de texto ajustable.
 

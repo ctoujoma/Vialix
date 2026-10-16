@@ -65,3 +65,16 @@ Salen de las decisiones, pero hay que jugarlas antes de darlas por buenas:
   - Molido: todo de golpe y un punto más de su esencia principal. Más fuerza, menos control.
   - Tostado: pierde su esencia menor, que es una forma de evitar el efecto secundario sin alambique.
 - **Vueltas de más:** cada vuelta después de que todo esté suelto suma un punto a todas las esencias presentes. Pasar de 9 en una revienta el caldero.
+
+## 7. Ronda de pulido tras jugar la v0.11 (16 de octubre)
+
+| Tema | Decisión |
+| --- | --- |
+| Tutorial | Gus se presenta antes de nada, y el primer encargo es «preparar algo de género antes de abrir». Si te sales del guion (otra base, otro ingrediente u otro tratamiento), Gus lo dice y ofrece vaciar el caldero. |
+| Bases | Fuera de la pantalla el «Agua potencia, Aguardiente suprime…»: confundía al llegar. Queda como nota de Remedios en el libro, en palabras llanas: «el agua da, el aguardiente quita, el vino cambia». |
+| Recetario | Índice y una hoja por receta con los pasos dibujados, como en *Kingdom Come*. El libro solo se desplaza en vertical; en pantallas anchas, a doble página. |
+| Cifras | Fuente pixel aparte para los números (el 2, el 5 y el 8 se confundían). |
+| Aerómetro | No es un camino obligado: desaparece el botón del taller y lo vende el vidriero ambulante del mercado. |
+| Vitrina | 6 huecos con hasta 3 frascos iguales cada uno (18 en total). |
+| Esperar | El reloj del HUD es un botón que pasa el tiempo deprisa hasta que llega alguien. |
+| Gente de la calle | Caricaturas con gracia propia al estilo LucasArts, no figuras genéricas. |
