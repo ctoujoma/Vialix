@@ -78,3 +78,14 @@ Salen de las decisiones, pero hay que jugarlas antes de darlas por buenas:
 | Vitrina | 6 huecos con hasta 3 frascos iguales cada uno (18 en total). |
 | Esperar | El reloj del HUD es un botón que pasa el tiempo deprisa hasta que llega alguien. |
 | Gente de la calle | Caricaturas con gracia propia al estilo LucasArts, no figuras genéricas. |
+
+## 8. Pendiente: el gancho (17 de octubre)
+
+Tras jugar la v0.12, el juego no engancha: la experimentación es mecánica, el botón del fuego no convence y el taller pide otra vuelta. El [segundo legajo](https://claude.ai/artifact/YWH659uSV77dCP3vjj5yd2) recoge el diagnóstico y las propuestas, con demos:
+
+- **Meta:** la deuda de Remedios con cuota semanal, el pueblo que cambia por lo que vendes, el misterio de Remedios.
+- **Clientes:** acertijos con varias soluciones, lo que piden contra lo que necesitan, vecinos con historia.
+- **Experimentación:** pulir lo actual, el Catastro de las esencias (la mezcla como ficha sobre un plano, con la misma química) o un juego de deducción.
+- **Fuego:** remover como vueltas, el fuelle, el reloj a mano o sin reloj.
+- **Taller:** mesa de trabajo de cerca, sala de aventura gráfica o lo actual repintado.
+- **Gente:** contorno de tinta, de color o sin contorno.

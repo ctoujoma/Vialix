@@ -2390,7 +2390,7 @@ function refreshPredict(){const el=$('#predict');const an=potAn();el.classList.r
   if(!P.mode)return show(teach&&'Elige la base');
   if(!P.items.length)return show(teach&&'Echa un ingrediente<small>Toca un tarro del estante</small>');
   const sum=ORD.reduce((a,k)=>a+T.raw[k],0);
-  if(!sum)return show(teach&&'Ponlo al fuego');
+  if(!sum)return show(teach&&!T.fire&&'Ponlo al fuego');
   if(an.tier===3)el.classList.add('warn');
   const known=S.known.has(an.eff)&&an.eff!=='placebo';
   if(S.aero){const name=known?EFN[an.eff]:'???';const sec=an.sec?(known?' · + '+SEC[an.sec]:' · + ¿?'):'';return show('→ '+(an.eff==='placebo'?'Agua con mucha fe':name+' · '+TIERS[an.tier]+(an.tier===3?' ⚠':'')+sec)+'<small>'+'★'.repeat(qualOf(T.stir))+'☆'.repeat(3-qualOf(T.stir))+'</small>')}
