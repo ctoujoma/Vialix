@@ -159,7 +159,9 @@ Portada → [5:00 Gaceta → Edicto] → Taller ⇄ Mercado (lun-sáb; la tienda
 
 - Gus se presenta primero («Soy Gus, el homúnculo de la casa…») y después propone preparar género antes de abrir.
 - Guía dos pociones: Valor (agua y Guindilla de dragón entera, tres vueltas) y «Para que callen» (aguardiente y Susurro embotellado molido, una vuelta).
-- **Si te sales del guion, Gus lo dice** con un aviso en rojo: base equivocada («Para esta receta va el agua…»), ingrediente equivocado o mal tratado. El aviso ofrece «Vaciar el caldero» para empezar otra vez. Si ya vas por delante, el tutorial te sigue.
+- **Mientras Gus guía, solo responde lo que brilla.** Lo demás (otras bases, otros tarros, otros tratamientos, las pestañas, el botón de esperar) se apaga y no hace nada; si lo tocas, Gus se sacude y lo que toca vuelve a brillar. El libro se puede abrir siempre.
+- Si aun así algo se sale del guion, Gus avisa en rojo y ofrece «Vaciar el caldero». Si ya vas por delante, el tutorial te sigue.
+- **Experimentación libre:** con la vitrina lista, Gus suelta las riendas («Ahora tú solo. Mezcla lo que quieras…»). Nada está bloqueado. Al embotellar, propone probarlo en él. Un botón, «Por hoy ya está», salta este paso.
 
 ## 5. Momentos de efecto visual («wow»)
 
